@@ -1,0 +1,105 @@
+.moi-widget-dock, .moi-right-toggle { display: none; }
+.ah-layout .moi-widget-dock:not([hidden]) {
+    display: block; position: fixed; z-index: 65; top: 0; right: 0;
+    height: 100dvh; box-sizing: border-box; width: var(--ah-right);
+    overflow: auto; padding: 24px 9px 20px;
+    background: rgba(249, 247, 241, .94); background-image: none;
+    backdrop-filter: blur(18px) saturate(.65); -webkit-backdrop-filter: blur(18px) saturate(.65);
+    border-left: 1px solid rgba(255,255,255,.9);
+    box-shadow: inset 1px 0 0 #fff9, -3px 0 16px #8e857b12;
+    scrollbar-width: thin; scrollbar-color: #c5b7d1 transparent;
+}
+.ah-layout .ah-members { display: none !important; }
+.ah-layout .moi-right-toggle {
+    display: grid; place-items: center; position: fixed; z-index: 70;
+    right: 10px; top: max(12px, env(safe-area-inset-top)); width: 26px; height: 30px;
+    background: linear-gradient(125deg,#fff,#e8e6efc9); border: 1px solid #d6d1df;
+    box-shadow: inset 0 1px 0 #fff, 0 2px 5px #62566c18;
+    border-radius: 10px; color: #80728d; font: 25px/1 sans-serif; cursor: pointer;
+}
+.ah-layout.moi-right-collapsed :is(#sheld,.ah-header) { right: 0 !important; }
+.moi-printer { text-align: center; }
+.moi-printer-heading { color: #8b7995; font: 13px/1.5 "Chalkboard SE", "After Hours Hand", cursive; margin-bottom: 9px; }
+.moi-printer-scene { position: relative; width: 100%; height: 275px; }
+.moi-printer-machine {
+    position: absolute; top: 0; left: 0; width: 100%; height: auto;
+    z-index: 3; pointer-events: none; filter: drop-shadow(0 4px 4px #594b641c);
+}
+.moi-photo-print {
+    position: absolute; z-index: 2; top: 92px; left: 17%; width: 66%;
+    padding: 7px 7px 0; box-sizing: border-box;
+    background: linear-gradient(100deg,#f5f4ef,#fff 20%,#fdfcf8 80%,#e9e8e3);
+    border: 1px solid #dfdcd8;
+    box-shadow: 1px 4px 6px #61556e26;
+}
+.moi-photo-image { display: block; width: 100%; height: 134px; object-fit: cover; object-position: center 25%; background: #ece6f2; }
+.moi-photo-caption {
+    display: grid; place-items: center; min-height: 31px;
+    color: #695871; font: 14px/1.25 "After Hours Hand", cursive; overflow-wrap: anywhere;
+}
+.moi-printer-select { width: 100%; min-width: 0; font-size: 12px; padding: 5px; color: #6f607b; background: #ffffffad; border: 1px solid #d9d0e2; border-radius: 6px; }
+.moi-printer-tools { display: flex; justify-content: center; flex-wrap: wrap; gap: 4px 9px; margin-top: 8px; }
+.moi-printer-tools button {
+    cursor: pointer; border: 0; border-bottom: 1px solid #c9bdd3;
+    padding: 3px 0; color: #806c8e; background: transparent; font-size: 11px;
+}
+.moi-printer-tools button:disabled { opacity: .45; cursor: wait; }
+.moi-printer-status { color: #927ca0; font-size: 10px; line-height: 1.4; min-height: 0; margin: 6px 0 14px; }
+.ah-layout .moi-widget-dock .moi-note-widget:not([hidden]) {
+    display: block; position: relative; top: auto; right: auto; bottom: auto;
+    width: 100% !important; z-index: auto; padding-top: 12px; margin-top: 15px;
+    border-top: 1px dashed #d6cbdf;
+}
+.ah-layout .moi-widget-dock .moi-note-stage { height: 185px; }
+.ah-layout .moi-widget-dock .moi-note-ball { top: 15px; left: 0; right: 0; width: 145px; height: 145px; }
+.ah-layout .moi-widget-dock .moi-note-label,
+.ah-layout .moi-widget-dock .moi-note-caption { display: block; background: none; }
+.ah-layout .moi-widget-dock .moi-note-widget.is-unfolded .moi-note-stage { height: auto; }
+.ah-layout .moi-widget-dock .moi-note-widget.is-unfolded .moi-note-paper { max-height: none; }
+.moi-photo-print.is-printing { animation: moi-photo-feed 1.5s cubic-bezier(.22,.7,.3,1); }
+@keyframes moi-photo-feed {
+    from { height: 8px; }
+    to { height: 174px; }
+}
+@media (max-width:1119px) {
+    .ah-layout .moi-widget-dock:not([hidden]) { width: 240px; box-shadow: -5px 0 22px #5946691b; }
+    .ah-layout .ah-header { padding-right: 40px; }
+}
+@media (prefers-reduced-motion:reduce) { .moi-photo-print.is-printing { animation: none; } }
+.moi-printer-machine { z-index: 1; }
+.moi-printer-lip { z-index: 3; clip-path: inset(0 0 29% 0); }
+.moi-photo-print { top: 0; margin-top: 47%; }
+
+.moi-printer-scene { isolation: isolate; }
+.moi-photo-print { height: 174px; overflow: hidden; }
+
+/* The photo itself opens all settings; the dock stays quiet and uncluttered. */
+.ah-layout button.moi-photo-print {
+    display: block; cursor: pointer; border-radius: 0; margin-bottom: 0;
+    color: #695871; font: inherit; text-align: center;
+    appearance: none; -webkit-appearance: none;
+}
+.ah-layout button.moi-photo-print:focus-visible { outline: 2px solid #aa98b8; outline-offset: 4px; }
+.ah-layout .moi-photo-dialog {
+    position: fixed; inset: 0; width: min(340px, calc(100vw - 36px));
+    max-width: 340px; height: fit-content; max-height: calc(100dvh - 40px);
+    margin: auto; padding: 22px; box-sizing: border-box; overflow: auto;
+    color: #6b6171; background: #faf8f3; background-image: none;
+    border: 1px solid #fff; border-radius: 18px;
+    box-shadow: 0 16px 55px #655b7329, inset 0 1px 0 #fff;
+}
+.ah-layout .moi-photo-dialog:not([open]) { display: none; }
+.moi-photo-dialog::backdrop { background: #51495c30; }
+.moi-photo-dialog-heading { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+.moi-photo-dialog-heading h3 { margin: 0; font-size: 18px; color: #6b6171; }
+.moi-photo-dialog-close { border: 0; background: transparent; color: #8c7b96; padding: 2px 6px; font-size: 26px; cursor: pointer; }
+.moi-photo-role-label { display: block; font-size: 13px; margin-bottom: 8px; }
+.moi-photo-dialog .moi-printer-select { font-size: 14px; padding: 9px; }
+.moi-photo-dialog .moi-printer-tools { gap: 12px; margin-top: 20px; }
+.moi-photo-dialog .moi-printer-tools button { font-size: 13px; padding: 6px 0; }
+.moi-photo-dialog .moi-printer-status:empty { display: none; }
+
+.moi-photo-caption-label { margin-top: 16px; }
+.moi-photo-dialog .moi-photo-caption-input { width: 100%; box-sizing: border-box; min-width: 0; padding: 9px; border: 1px solid #d9d0e2; border-radius: 6px; background: #ffffffad; color: #6f607b; font-size: 14px; }
+.moi-note-widget.is-unfolded .moi-note-paper { cursor: pointer; }
+.moi-note-paper:focus-visible { outline: 2px solid #aa98b8; outline-offset: 3px; }

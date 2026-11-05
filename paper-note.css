@@ -1,0 +1,84 @@
+.moi-note-widget { display: none; }
+.ah-layout .moi-note-widget:not([hidden]) {
+    position: fixed; right: 9px; top: 175px;
+    width: calc(var(--ah-right) - 18px);
+    z-index: 56; display: block; color: #6c5b78; text-align: center;
+}
+.moi-note-label {
+    font: 13px/1.4 "Chalkboard SE", "After Hours Hand", cursive;
+    color: #8e7a99; margin-bottom: 5px;
+}
+.moi-note-stage { position: relative; height: 195px; perspective: 650px; transition: height 800ms; }
+.moi-note-ball {
+    position: absolute; inset: 15px 8px auto; margin: auto; height: 150px; width: 150px;
+    border: 0; padding: 0; background: transparent; cursor: pointer;
+    z-index: 3; transform: rotate(-7deg);
+    transition: transform 750ms cubic-bezier(.2,.75,.2,1), opacity 500ms;
+}
+.moi-note-ball img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(3px 8px 5px #5a4b632a); }
+.moi-note-ball:hover { transform: rotate(3deg) translateY(-4px); }
+.moi-note-ball:focus-visible { outline: 2px solid #af96bd; outline-offset: 0; border-radius: 45%; }
+.moi-note-paper {
+    position: relative; top: 13px; width: 100%; min-height: 260px;
+    pointer-events: none; opacity: 0; transform: scale(.3) rotate(17deg);
+    transform-origin: 50% 45%;
+    transition: transform 900ms cubic-bezier(.18,.72,.2,1), opacity 300ms;
+    filter: drop-shadow(2px 6px 6px #67516d2c);
+}
+.moi-note-facets { position: absolute; inset: 0; transform-style: preserve-3d; }
+.moi-note-facet {
+    position: absolute; inset: 0;
+    background: #faf6eb url('./paper-creases.jpg') center / 100% 100%;
+    transform: rotateX(var(--fold-x)) rotateY(var(--fold-y)) scale(.75);
+    transition: transform 950ms cubic-bezier(.18,.72,.2,1);
+}
+.moi-note-writing {
+    position: relative; z-index: 2; min-height: 260px; box-sizing: border-box;
+    padding: 22px 15px 18px; opacity: 0;
+    font-family: "After Hours Hand", "Kaiti SC", cursive;
+    transition: opacity 300ms 520ms;
+}
+.moi-note-to { display: block; text-align: left; color: #998778; font-size: 12px; letter-spacing: .04em; }
+.moi-note-body { text-align: left; font-size: 16px; line-height: 1.8; color: #51483e; white-space: pre-wrap; margin: 18px 0; overflow-wrap: anywhere; }
+.moi-note-signature { text-align: right; font-size: 14px; color: #6a5b51; }
+.moi-note-caption { margin: 8px 0 0; font-size: 11px; color: #7c6b88; }
+.moi-note-status { min-height: 16px; margin: 5px 0; font-size: 10px; line-height: 1.5; color: #8e7e99; }
+.moi-note-tools { display: none; justify-content: center; gap: 7px; margin-top: 8px; }
+.moi-note-tools button {
+    border: 0; border-bottom: 1px solid #c6b6cf; border-radius: 0;
+    background: transparent; color: #7a628a; font: 11px/1.5 inherit;
+    padding: 3px 2px; cursor: pointer;
+}
+.moi-note-tools button:disabled { opacity: .5; cursor: wait; }
+.moi-note-widget.is-unfolded .moi-note-stage { height: auto; min-height: 280px; padding-bottom: 12px; }
+.moi-note-widget.is-unfolded .moi-note-paper { opacity: 1; transform: scale(1) rotate(-2deg); pointer-events: auto; }
+.moi-note-widget.is-unfolded .moi-note-facet { transform: rotateX(0) rotateY(0) scale(1); }
+.moi-note-widget.is-unfolded .moi-note-writing { opacity: 1; }
+.moi-note-widget.is-unfolded .moi-note-ball { opacity: 0; transform: scale(.32) rotate(75deg); pointer-events: none; }
+.moi-note-widget.is-unfolded .moi-note-tools { display: flex; }
+.moi-note-widget.is-writing .moi-note-status { color: #715385; }
+@media (max-width:1119px) {
+    .ah-layout .moi-note-widget:not([hidden]) {
+        top: auto; bottom: 78px; right: 12px; width: 145px;
+    }
+    .moi-note-label, .moi-note-status, .moi-note-caption { display: none; }
+    .moi-note-stage { height: 65px; }
+    .moi-note-ball { width: 65px; height: 65px; top: 0; left: auto; right: 0; }
+    .moi-note-widget.is-unfolded { width: min(280px,calc(100vw - var(--tw-rail) - 24px)) !important; }
+    .moi-note-widget.is-unfolded .moi-note-stage { min-height: 240px; }
+    .moi-note-widget.is-unfolded .moi-note-paper { max-height: 58dvh; overflow: auto; }
+    .moi-note-widget.is-unfolded .moi-note-status,
+    .moi-note-widget.is-unfolded .moi-note-caption { display: block; background: #faf7fded; padding: 3px 6px; border-radius: 5px; }
+    .moi-note-widget.is-unfolded .moi-note-tools { background: #faf7fded; padding: 4px; border-radius: 6px; }
+}
+@media (prefers-reduced-motion:reduce) {
+    .moi-note-ball, .moi-note-paper, .moi-note-facet, .moi-note-writing, .moi-note-stage { transition: none !important; }
+}
+@media (max-width:1119px) {
+    .ah-layout .moi-note-widget:not([hidden]) { top: calc(100dvh - 150px); bottom: auto; }
+    .ah-layout .moi-note-widget.is-unfolded:not([hidden]) { top: max(70px, calc(100dvh - 470px)); }
+}
+.moi-note-widget.is-unfolded .moi-note-writing { max-height: 52dvh; overflow: auto; scrollbar-width: thin; scrollbar-color: #c9b9d1 transparent; }
+@media (max-width:1119px) {
+    .moi-note-widget.is-unfolded .moi-note-paper { max-height: none; overflow: visible; }
+}

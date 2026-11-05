@@ -1,0 +1,33 @@
+/* User supplied stationery backdrop beneath a light frosted surface. */
+.ah-layout body { background: #fafafa !important; }
+.ah-layout #bg1 {
+    background-color: #fafafa !important;
+    background-image: linear-gradient(#ffffff52,#ffffff52), url('./moi-background.jpg') !important;
+    background-size: auto, 1280px auto !important;
+    background-repeat: repeat !important;
+    background-position: center top !important;
+    opacity: 1 !important;
+    filter: blur(.6px) !important;
+}
+.ah-layout #sheld,
+.ah-layout #chat,
+.ah-layout .ah-folder-home { background: transparent !important; }
+.ah-layout .ah-header {
+    background: #ffffff8c;
+    border-bottom-color: #ffffffc9;
+    box-shadow: 0 1px 0 #aeb4c521;
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+}
+.ah-layout .ah-members {
+    background: #f6f7fa70;
+    border-left-color: #ffffffb3;
+    box-shadow: inset 1px 0 0 #c6cad329;
+}
+.ah-layout #send_form {
+    background: linear-gradient(160deg,#ffffffa8,#f4f5f779);
+    border-color: #ffffffed;
+    box-shadow: inset 0 1px 0 #fff,0 3px 12px #4e587611;
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+}
