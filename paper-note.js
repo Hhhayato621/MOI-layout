@@ -1,3 +1,5 @@
+import { characterArchives, conversationMessages } from './archive-data.js';
+import { recentThree, notePrompt } from './paper-note-core.js';
 const context = () => SillyTavern.getContext();
 let widget;
 let body;
@@ -6,7 +8,8 @@ let caption;
 let status;
 let opener;
 let expanded = false;
-let revision = 0;
+let generation;
+const notes = new Map();
 
 function make(tag, className, text) {
     const element = document.createElement(tag);
@@ -30,7 +33,7 @@ function mount() {
         expanded = true;
         widget.classList.add('is-unfolded');
         opener.setAttribute('aria-expanded', 'true');
-        void refresh();
+        void prepareNote();
     });
     opener.setAttribute('aria-label', '展开角色的纸团留言');
     opener.setAttribute('aria-expanded', 'false');
@@ -62,7 +65,7 @@ function mount() {
     writing.append(body, signature);
     paper.append(facets, writing);
     stage.append(opener, paper);
-    caption = make('p', 'moi-note-caption', '点击纸团，展开留言');
+    caption = make('p', 'moi-note-caption', '点击纸团，收一封留言');
     status = make('p', 'moi-note-status');
     status.setAttribute('role', 'status');
     const foldPaper = () => {
@@ -82,36 +85,64 @@ function mount() {
             foldPaper();
         }
     });
-    widget.append(stage, caption);
+    widget.append(stage, caption, status);
     document.body.append(widget);
 }
 
-async function refresh() {
-    const current = ++revision;
-    widget.hidden = getComputedStyle(document.documentElement).getPropertyValue('--ah-theme').trim() !== 'enabled';
-    if (widget.hidden) return;
-    const ctx = context();
-    let name = ctx.characters[ctx.characterId]?.name;
-    if (!name && ctx.groupId) name = ctx.groups.find(group => String(group.id) === String(ctx.groupId))?.name;
-    if (!name) {
-        try {
-            const response = await fetch('/api/chats/recent', {
-                method: 'POST', headers: ctx.getRequestHeaders(),
-                body: JSON.stringify({ max: 1, pinned: [] }),
-            });
-            if (!response.ok) throw new Error(String(response.status));
-            const [latest] = await response.json();
-            name = latest?.group
-                ? ctx.groups.find(group => String(group.id) === String(latest.group))?.name
-                : ctx.characters.find(character => character.avatar === latest?.avatar)?.name;
-        } catch (error) {
-            console.warn('MOI paper note character', error);
+function plainText(text) {
+    const parsed=new DOMParser().parseFromString(text,'text/html');
+    parsed.querySelectorAll('script,style,iframe').forEach(n=>n.remove());
+    return parsed.body.textContent || '';
+}
+function refresh() {
+    widget.hidden=getComputedStyle(document.documentElement).getPropertyValue('--ah-theme').trim()!=='enabled';
+}
+async function createNote() {
+    const ctx=context();
+    body.textContent=''; signature.textContent='';
+    status.textContent='正在找一张纸条…';
+    const rows=await characterArchives();
+    const candidates=rows.filter(row=>row.archives.some(a=>Number(a.chat_items??a.message_count)>=3));
+    // Each character gets one equal chance, regardless of archive count.
+    while(candidates.length) {
+        const index=Math.floor(Math.random()*candidates.length);
+        const [{character,archives}]=candidates.splice(index,1);
+        for(const archive of archives.filter(a=>Number(a.chat_items??a.message_count)>=3)) {
+            const file=String(archive.file_id||archive.file_name).replace(/\.jsonl$/i,'');
+            const response=await fetch('/api/chats/get',{method:'POST',headers:ctx.getRequestHeaders(),body:JSON.stringify({avatar_url:character.avatar,file_name:file})});
+            if(!response.ok) throw new Error('聊天存档读取失败');
+            const data=await response.json();
+            const messages=conversationMessages(Array.isArray(data)?data:[]);
+            if(messages.length<3) continue;
+            const last=recentThree(messages);
+            caption.textContent=character.name+' 的纸条';
+            const key=JSON.stringify([character.avatar,file,last]);
+            let text=notes.get(key);
+            if(!text) {
+                if(ctx.onlineStatus==='no_connection') throw new Error('请先连接模型，再点击纸团');
+                status.textContent='正在写下留言…';
+                const prompt=notePrompt(character.name,last,plainText);
+                text=String(await ctx.generateRaw({...prompt,responseLength:220,trimNames:false})).trim();
+                text=text.replace(/<think>[\s\S]*?<\/think>/gi,'').trim();
+                if(!text) throw new Error('模型没有返回留言，请重试');
+                notes.set(key,text);
+            }
+            body.textContent=text;
+            signature.textContent='— '+character.name;
+            status.textContent='';
+            return;
         }
     }
-    if (current !== revision) return;
-    caption.textContent = name ? name + ' 的纸条' : '点击纸团，轻轻展开';
-    body.textContent = '';
-    signature.textContent = '';
+    caption.textContent='还没有可投递的纸条';
+    status.textContent=rows.some(row=>row.error)?'部分存档读取失败，请稍后重试':'需要至少有一个包含 3 条对话的角色存档';
+}
+async function prepareNote() {
+    refresh();
+    if(widget.hidden || generation) return;
+    generation=createNote();
+    try { await generation; }
+    catch(error) { status.textContent=error.message||'留言暂时未能送达，请稍后重试'; }
+    finally { generation=undefined; }
 }
 
 export function installPaperNote() {

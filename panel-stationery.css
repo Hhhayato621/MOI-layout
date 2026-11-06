@@ -1,0 +1,72 @@
+/* MOI utility panels: the supplied dotted backdrop behind a quiet milky surface. */
+html.ah-layout body #top-settings-holder .drawer-content,
+html.ah-layout body .popup {
+    --SmartThemeBodyColor: #655d70;
+    --SmartThemeEmColor: #93859d;
+    --SmartThemeQuoteColor: #8b729d;
+    --SmartThemeBlurTintColor: rgba(252,250,247,.8);
+    --SmartThemeBorderColor: #ded7e5;
+    --SmartThemeShadowColor: transparent;
+    --SmartThemeUnderlineColor: #baa9c6;
+    --mainFontFamily: "MOI Smile", "Kaiti SC", cursive;
+    color: #655d70 !important;
+    background-color: #faf9f7 !important;
+    background-image: linear-gradient(#fcfbf9ba,#fcfbf9ba),url('./moi-background.jpg') !important;
+    background-size: auto,1280px auto !important;
+    background-position: center top !important;
+    background-repeat: repeat !important;
+    border: 1px solid #fff !important;
+    box-shadow: inset 0 1px 0 #fff,0 6px 22px #81738c18 !important;
+    backdrop-filter: blur(3px) !important; -webkit-backdrop-filter: blur(3px) !important;
+    font-family: "MOI Smile", "Kaiti SC", cursive !important;
+    scrollbar-color: #c4b8ce transparent; scrollbar-width: thin;
+    color-scheme: light;
+}
+html.ah-layout #top-settings-holder .drawer-content :where(div,span,label,p,small,strong,em,h1,h2,h3,h4,h5,input,textarea,select,option,button,summary):not([class*="fa-"]):not(.fa):not(.drawer-icon),
+html.ah-layout .popup :where(label,p,small,strong,h2,h3,h4,input,textarea,select,option,button):not([class*="fa-"]) {
+    font-family: "MOI Smile", "Kaiti SC", cursive !important;
+    text-shadow: none !important;
+}
+html.ah-layout #top-settings-holder .drawer-content :where(div,span,label,p,small,strong,em,h1,h2,h3,h4,h5) { text-shadow: none !important; }
+html.ah-layout body #top-settings-holder .drawer-content :is(h3,h4,.title_restorable,.inline-drawer-toggle,.inline-drawer-header) {
+    color: #72627f !important;
+    background: #fcfaf7a6 !important;
+    border-color: #ddd4e5 !important;
+    box-shadow: none !important;
+    font-weight: 500;
+}
+html.ah-layout body #top-settings-holder .drawer-content :is(.text_pole,textarea,select,input[type=text],input[type=number],input[type=search]) {
+    background: #fffdf9ba !important; color: #6e6279 !important;
+    border: 1px solid #dcd3e3 !important; border-radius: 8px;
+    box-shadow: inset 0 1px 2px #8c7b9b08 !important; text-shadow: none !important;
+}
+html.ah-layout body #top-settings-holder .drawer-content :is(input,textarea)::placeholder { color: #a398ab; opacity: 1; }
+html.ah-layout body #top-settings-holder .drawer-content :is(input,textarea,select):focus-visible { outline: 2px solid #cab8d9; outline-offset: 1px; }
+html.ah-layout body #top-settings-holder .drawer-content :is(.menu_button,button:not(.drawer-icon)) {
+    background: linear-gradient(#fffefa,#f1eaf5) !important;
+    color: #83708f !important; border-color: #ddd3e5 !important;
+    border-radius: 7px; box-shadow: inset 0 1px 0 #fff,0 1px 2px #8b7d9810 !important;
+    text-shadow: none !important;
+}
+html.ah-layout body #top-settings-holder .drawer-content :is(.menu_button,button):hover { border-color: #b9a6c9 !important; }
+html.ah-layout body #top-settings-holder .drawer-content :is(input[type=checkbox],input[type=radio]) { accent-color: #ac94bd; }
+html.ah-layout body #top-settings-holder .drawer-content input[type=range] { accent-color: #b5a2c3; background: transparent !important; }
+html.ah-layout #top-settings-holder .drawer-content input[type=range]::-webkit-slider-runnable-track { background: #e1d7e8; height: 4px; border-radius: 8px; box-shadow: none; }
+html.ah-layout #top-settings-holder .drawer-content input[type=range]::-webkit-slider-thumb { background: #bca6cc; border: 2px solid #fff; box-shadow: 0 1px 3px #74627f24; }
+html.ah-layout #top-settings-holder .drawer-content ::-webkit-scrollbar { width: 5px; height: 5px; }
+html.ah-layout #top-settings-holder .drawer-content ::-webkit-scrollbar-thumb { background: #c9bbd3; border: 1px solid #f8f5f9; border-radius: 9px; }
+html.ah-layout #top-settings-holder .drawer-content ::-webkit-scrollbar-track { background: transparent; }
+html.ah-layout body #top-settings-holder #completion_prompt_manager_list,
+html.ah-layout body #top-settings-holder #completion_prompt_manager .completion_prompt_manager_list_head {
+    background: #fffdf85c !important; color: #7c6b88 !important;
+    border-color: #e1d9e7 !important; box-shadow: none !important;
+}
+html.ah-layout body #top-settings-holder #completion_prompt_manager :is(.bai-bai-preset-group,.bai-bai-preset-global-library,.bai-bai-preset-library,.bai-bai-preset-backup) {
+    background: #fcfaf8b8 !important; border: 1px solid #e1d7e8 !important;
+    border-radius: 12px; color: #72627f !important; box-shadow: inset 0 1px 0 #fff !important;
+}
+html.ah-layout body #top-settings-holder #completion_prompt_manager :is(.completion_prompt_manager_prompt,.completion_prompt_manager_header,.completion_prompt_manager_header_advanced) {
+    background: #fffdf747 !important; color: #7a6a85 !important; border-color: #e3dae9 !important;
+}
+html.ah-layout #top-settings-holder #completion_prompt_manager :is(.bai-bai-preset-group,.completion_prompt_manager_prompt) [class*="fa-"] { color: #9a86a9; }
+html.ah-layout #top-settings-holder #completion_prompt_manager .completion_prompt_manager_prompt_disabled { opacity: .55; }

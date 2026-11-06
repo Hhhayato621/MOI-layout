@@ -1,0 +1,35 @@
+/* Actual candy cutout, with no inherited grey track or brightness filter. */
+html.ah-layout body input[type="range"],
+html.ah-layout body #top-settings-holder .drawer-content input[type="range"] {
+    -webkit-appearance: none !important; appearance: none !important;
+    background: linear-gradient(90deg,#f1dce9,#d9c8ee 60%,#efe0f0) !important;
+    background-size: 100% 100% !important; background-repeat: no-repeat !important;
+    height: 5px !important; padding: 0 !important; border: 0 !important;
+    border-radius: 8px !important; box-shadow: inset 0 1px 1px #a78ab21a !important;
+    filter: none !important; opacity: 1;
+    overflow: visible; cursor: ew-resize;
+}
+html.ah-layout body input[type="range"]:disabled { cursor: default; opacity: .65; filter: none !important; }
+html.ah-layout body input[type="range"]::-webkit-slider-runnable-track,
+html.ah-layout body #top-settings-holder .drawer-content input[type="range"]::-webkit-slider-runnable-track {
+    background: linear-gradient(90deg,#f1dce9,#d9c8ee 60%,#efe0f0) !important;
+    height: 5px !important; border: 0 !important; border-radius: 8px !important;
+    box-shadow: none !important;
+}
+html.ah-layout body input[type="range"]::-webkit-slider-thumb,
+html.ah-layout body #top-settings-holder .drawer-content input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none !important; appearance: none !important;
+    width: 34px !important; height: 23px !important; margin-top: -9px !important;
+    background: transparent url('./slider-candy.png') center / contain no-repeat !important;
+    border: 0 !important; border-radius: 0 !important; box-shadow: none !important;
+    filter: drop-shadow(0 1px 1px #917c9d40) !important;
+}
+html.ah-layout body input[type="range"]::-moz-range-track {
+    height: 5px !important; border: 0 !important; border-radius: 8px !important;
+    background: linear-gradient(90deg,#f1dce9,#d9c8ee 60%,#efe0f0) !important;
+}
+html.ah-layout body input[type="range"]::-moz-range-thumb {
+    width: 34px !important; height: 23px !important;
+    background: transparent url('./slider-candy.png') center / contain no-repeat !important;
+    border: 0 !important; border-radius: 0 !important; box-shadow: none !important;
+}

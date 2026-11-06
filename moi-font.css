@@ -1,0 +1,21 @@
+@font-face {
+    font-family: "MOI Smile";
+    src: url('./HongleiYouth.woff2') format('woff2');
+    font-style: normal; font-weight: 400; font-display: swap;
+    size-adjust: 110%;
+}
+/* Original unmodified 鸿雷小纸条青春体, loaded locally by the companion extension. */
+html.ah-layout { --mainFontFamily: "MOI Smile", "Kaiti SC", cursive; }
+html.ah-layout body,
+html.ah-layout body :where(div,span,p,q,a,label,small,strong,em,h1,h2,h3,h4,h5,h6,input,textarea,select,option,button,summary,li,td,th):not([class*="fa-"]):not(.fa):not(.drawer-icon):not(.codicon) {
+    font-family: "MOI Smile", "Kaiti SC", cursive !important;
+    font-weight: 400 !important;
+    -webkit-text-stroke: 0;
+}
+
+@media (max-width: 600px) {
+    html.ah-layout #user-settings-block [name="userSettingsRowOne"] { flex-wrap: wrap; gap: 8px; }
+    html.ah-layout #user-settings-block [name="userSettingsRowOne"] > div:first-child { flex: 1 0 100%; }
+    html.ah-layout #user-settings-block [name="userSettingsRowOne"] h3 { white-space: nowrap; }
+    html.ah-layout #user-settings-block #version_display { font-size: 12px; overflow-wrap: anywhere; }
+}

@@ -1,3 +1,10 @@
+@import url('./pocket-music.css');
+@import url('./dock-finish.css');
+@import url('./message-pass.css');
+@import url('./moi-font.css');
+@import url('./candy-sliders.css');
+@import url('./panel-stationery.css');
+@import url('./composer.css');
 @import url('./photo-printer.css');
 @import url('./liquid-surface.css');
 @import url('./paper-note.css');
@@ -14,7 +21,7 @@
 }
 .ah-eyebrow { display: block; font-size: 9px; letter-spacing: .14em; color: #8a7c99; }
 .ah-folder-home h2 {
-    font: 400 clamp(21px, 2.4vw, 30px)/1.3 "Chalkboard SE", "After Hours Hand", cursive;
+    font: 400 clamp(21px, 2.4vw, 30px)/1.3 "Chalkboard SE", "MOI Smile", cursive;
     margin: 7px 0;
 }
 .ah-folder-count { margin: 0; font-size: 12px; color: #877b90; }
@@ -79,7 +86,7 @@
 }
 .ah-folder-caption { display: block; padding: 10px 3px 0; text-align: center; }
 .ah-folder-name {
-    display: block; font: 400 17px/1.45 "After Hours Hand", "Kaiti SC", cursive;
+    display: block; font: 400 17px/1.45 "MOI Smile", "Kaiti SC", cursive;
     overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
 .ah-folder-subtitle { display: block; color: #94879c; margin-top: 3px; font-size: 10px; }
@@ -99,7 +106,7 @@
     padding: 16px; box-shadow: 0 8px 24px #624b7510;
 }
 .ah-archive-heading { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-.ah-archive-heading h3 { margin: 4px 0 0; font: 400 21px/1.4 "After Hours Hand", cursive; }
+.ah-archive-heading h3 { margin: 4px 0 0; font: 400 21px/1.4 "MOI Smile", cursive; }
 .ah-archive-close {
     width: 30px; height: 30px; border: 1px solid #e3dbe9; border-radius: 50%;
     color: #796887; background: #fff; cursor: pointer; font-size: 21px;

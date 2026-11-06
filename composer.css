@@ -1,0 +1,33 @@
+
+/* Matching miniature stationery controls for the transparent composer. */
+.ah-layout #send_form,
+.ah-layout #send_form #nonQRFormItems,
+.ah-layout #send_form #send_textarea,
+.ah-layout #send_form #leftSendForm,
+.ah-layout #send_form #rightSendForm {
+    background: transparent !important; background-image: none !important;
+    border: 0 !important; box-shadow: none !important;
+    backdrop-filter: none !important; -webkit-backdrop-filter: none !important;
+}
+.ah-layout #send_form::before, .ah-layout #send_form::after { content: none !important; }
+.ah-layout #send_form { padding: 4px 8px !important; gap: 7px; }
+.ah-layout #send_form #send_textarea { color: #756d80 !important; min-width: 0; }
+.ah-layout #send_form #send_textarea::placeholder { color: #93889f; opacity: 1; font-family: "MOI Smile", cursive; font-size: 15px; }
+.ah-layout #send_form :is(#options_button,#extensionsMenuButton,#send_but) {
+    display: grid; place-items: center; flex: 0 0 34px;
+    width: 34px !important; height: 38px !important; min-width: 34px;
+    padding: 0 !important; margin: 0 2px !important; border: 0 !important;
+    border-radius: 0 !important; box-shadow: none !important;
+    background: transparent center / 36px 36px no-repeat !important;
+    font-size: 0 !important; color: transparent !important; cursor: pointer;
+}
+.ah-layout #send_form :is(#options_button,#extensionsMenuButton,#send_but)::before,
+.ah-layout #send_form :is(#options_button,#extensionsMenuButton,#send_but)::after { content: none !important; }
+.ah-layout #send_form #options_button { background-image: url('./composer-pouch-v2.png') !important; }
+.ah-layout #send_form #extensionsMenuButton { background-image: url('./composer-wand-v2.png') !important; }
+.ah-layout #send_form #send_but { background-image: url('./composer-envelope-v2.png') !important; }
+.ah-layout #send_form :is(#options_button,#extensionsMenuButton,#send_but):focus-visible { outline: 1px solid #bba8c9; outline-offset: 2px; }
+html.ah-layout body #sheld #send_form#send_form {
+    background: transparent !important; background-image: none !important;
+    border: 0 !important; box-shadow: none !important;
+}

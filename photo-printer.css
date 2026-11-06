@@ -19,7 +19,7 @@
 }
 .ah-layout.moi-right-collapsed :is(#sheld,.ah-header) { right: 0 !important; }
 .moi-printer { text-align: center; }
-.moi-printer-heading { color: #8b7995; font: 13px/1.5 "Chalkboard SE", "After Hours Hand", cursive; margin-bottom: 9px; }
+.moi-printer-heading { color: #8b7995; font: 13px/1.5 "Chalkboard SE", "MOI Smile", cursive; margin-bottom: 9px; }
 .moi-printer-scene { position: relative; width: 100%; height: 275px; }
 .moi-printer-machine {
     position: absolute; top: 0; left: 0; width: 100%; height: auto;
@@ -35,7 +35,7 @@
 .moi-photo-image { display: block; width: 100%; height: 134px; object-fit: cover; object-position: center 25%; background: #ece6f2; }
 .moi-photo-caption {
     display: grid; place-items: center; min-height: 31px;
-    color: #695871; font: 14px/1.25 "After Hours Hand", cursive; overflow-wrap: anywhere;
+    color: #695871; font: 14px/1.25 "MOI Smile", cursive; overflow-wrap: anywhere;
 }
 .moi-printer-select { width: 100%; min-width: 0; font-size: 12px; padding: 5px; color: #6f607b; background: #ffffffad; border: 1px solid #d9d0e2; border-radius: 6px; }
 .moi-printer-tools { display: flex; justify-content: center; flex-wrap: wrap; gap: 4px 9px; margin-top: 8px; }
@@ -103,3 +103,13 @@
 .moi-photo-dialog .moi-photo-caption-input { width: 100%; box-sizing: border-box; min-width: 0; padding: 9px; border: 1px solid #d9d0e2; border-radius: 6px; background: #ffffffad; color: #6f607b; font-size: 14px; }
 .moi-note-widget.is-unfolded .moi-note-paper { cursor: pointer; }
 .moi-note-paper:focus-visible { outline: 2px solid #aa98b8; outline-offset: 3px; }
+/* Docked notes share one top anchor in both states, including mobile. */
+html.ah-layout #moi-widget-dock .moi-note-widget:not([hidden]),
+html.ah-layout #moi-widget-dock .moi-note-widget.is-unfolded:not([hidden]) {
+    position: relative !important;
+    top: auto !important; bottom: auto !important; left: auto !important; right: auto !important;
+    width: 100% !important;
+    overflow-anchor: none;
+}
+html.ah-layout #moi-widget-dock { overflow-anchor: none; }
+.ah-layout #moi-widget-dock .moi-note-status:not(:empty) { display: block; font-size: 12px; line-height: 1.6; padding: 6px; color: #93829e; }

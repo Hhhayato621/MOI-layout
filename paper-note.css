@@ -5,7 +5,7 @@
     z-index: 56; display: block; color: #6c5b78; text-align: center;
 }
 .moi-note-label {
-    font: 13px/1.4 "Chalkboard SE", "After Hours Hand", cursive;
+    font: 13px/1.4 "Chalkboard SE", "MOI Smile", cursive;
     color: #8e7a99; margin-bottom: 5px;
 }
 .moi-note-stage { position: relative; height: 195px; perspective: 650px; transition: height 800ms; }
@@ -35,7 +35,7 @@
 .moi-note-writing {
     position: relative; z-index: 2; min-height: 260px; box-sizing: border-box;
     padding: 22px 15px 18px; opacity: 0;
-    font-family: "After Hours Hand", "Kaiti SC", cursive;
+    font-family: "MOI Smile", "Kaiti SC", cursive;
     transition: opacity 300ms 520ms;
 }
 .moi-note-to { display: block; text-align: left; color: #998778; font-size: 12px; letter-spacing: .04em; }

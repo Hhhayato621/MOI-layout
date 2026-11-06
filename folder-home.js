@@ -1,3 +1,4 @@
+import { characterArchives, invalidateArchives } from './archive-data.js';
 import { selectCharacterById, setActiveCharacter } from '../../../../script.js';
 
 const ctx = () => SillyTavern.getContext();
@@ -9,6 +10,18 @@ let selectedAvatar = '';
 let requestId = 0;
 let busy = false;
 let characterSignature = '';
+let recentRanks = new Map();
+let rankingRevision = 0;
+async function refreshOrder() {
+    const version=++rankingRevision;
+    let rows;
+    try { rows=await characterArchives(); }
+    catch(error) { console.warn('MOI folder order',error); return; }
+    if(version!==rankingRevision)return;
+    recentRanks=new Map(rows.map(row=>[row.character.avatar,row.latest]));
+    if(home?.isConnected && document.documentElement.classList.contains('ah-folder-home-visible')) renderFolders();
+}
+
 
 function node(tag, className, text) {
     const value = document.createElement(tag);
@@ -104,16 +117,9 @@ async function expandFolder(character, card, trigger) {
     const rowEnd = Math.min(cards.length - 1, Math.ceil((cards.indexOf(card) + 1) / columns) * columns - 1);
     cards[rowEnd].after(panel);
     try {
-        const response = await fetch('/api/characters/chats', {
-            method: 'POST',
-            headers: ctx().getRequestHeaders(),
-            body: JSON.stringify({ avatar_url: character.avatar }),
-        });
-        if (!response.ok) throw new Error(String(response.status));
-        const data = await response.json();
+        const rows=await characterArchives();
         if (revision !== requestId || !panel.isConnected) return;
-        const archives = data?.error ? [] : Object.values(data).filter(item => item.file_name);
-        archives.sort((a, b) => String(b.file_name).localeCompare(String(a.file_name)));
+        const archives=rows.find(row=>row.character.avatar===character.avatar)?.archives || [];
         if (!archives.length) {
             content.replaceChildren(node('p', 'ah-folder-status', '还没有聊天档案。'),
                 action('打开角色，开始对话 ↗', 'ah-start-character', () => enterCharacter(character)));
@@ -135,7 +141,8 @@ async function expandFolder(character, card, trigger) {
 function renderFolders() {
     selectedAvatar = '';
     ++requestId;
-    const characters = ctx().characters.filter(item => item.avatar && item.avatar !== 'none');
+    const characters = ctx().characters.filter(item => item.avatar && item.avatar !== 'none')
+        .sort((a,b)=>(recentRanks.get(b.avatar)||0)-(recentRanks.get(a.avatar)||0));
     const filtered = characters.filter(item => item.name.toLocaleLowerCase().includes(query));
     const cards = filtered.map((character, index) => {
         const card = node('article', 'ah-folder');
@@ -188,6 +195,7 @@ function createHome(chat) {
     home.append(top, grid);
     chat.prepend(home);
     renderFolders();
+    void refreshOrder();
 }
 
 function syncHome() {
@@ -215,6 +223,8 @@ export function installFolderHome() {
     new MutationObserver(syncHome).observe(document.querySelector('#custom-style') || document.head,
         { childList: true, characterData: true, subtree: true });
     const { eventSource, eventTypes } = ctx();
-    for (const key of ['APP_READY', 'CHAT_CHANGED', 'CHARACTER_EDITED']) eventSource.on(eventTypes[key], syncHome);
+    for (const key of ['APP_READY', 'CHAT_CHANGED', 'CHARACTER_EDITED','MESSAGE_RECEIVED','MESSAGE_SENT','CHAT_DELETED']) {
+        if(eventTypes[key]) eventSource.on(eventTypes[key],()=>{invalidateArchives();syncHome();void refreshOrder();});
+    }
     syncHome();
 }

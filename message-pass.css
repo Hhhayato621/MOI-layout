@@ -1,0 +1,90 @@
+.moi-message-pass { display: none; }
+.ah-layout .moi-message-pass {
+    display: block; position: relative; width: 250px; height: 375px;
+    margin: 0 auto 8px 0; isolation: isolate;
+}
+.ah-layout .moi-message-pass-frame { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+.ah-layout .moi-message-pass-name {
+    position: absolute; top: 43%; left: 25%; width: 50%; height: 36px;
+    font-size: 21px; line-height: 1.3; color: #655a68;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.ah-layout .moi-message-pass-photo {
+    position: absolute; top: 52%; left: 25%; width: 50%; height: 27%;
+    border: 4px solid #fffdf9; box-sizing: border-box; object-fit: cover; object-position: center 25%;
+    border-radius: 0; box-shadow: 0 2px 3px #6c5b7115;
+}
+.ah-layout .moi-message-pass-meta {
+    position: absolute; top: 81%; left: 25%; width: 52%;
+    color: #817486; font-size: 11px; line-height: 1.45;
+}
+.ah-layout .moi-message-pass-date { display: block; }
+.ah-layout #chat > .moi-has-message-pass > .mesAvatarWrapper { display: none !important; }
+.ah-layout #chat > .moi-has-message-pass > .mes_block { width: 100%; min-width: 0; }
+.ah-layout #chat > .moi-has-message-pass .ch_name > .flex-container:first-child { display: none !important; }
+.ah-layout #chat > .moi-has-message-pass .ch_name { justify-content: flex-end; min-height: 26px; margin: 0 0 12px; }
+.ah-layout #chat > .moi-has-message-pass .ch_name .mes_buttons { margin-left: auto; }
+@media (max-width: 480px) {
+    .ah-layout .moi-message-pass { margin-left: auto; margin-right: auto; }
+}
+
+/* Keep the pass and its original message actions together beside the prose. */
+html.ah-layout #chat > .moi-has-message-pass > .mes_block {
+    display: grid !important; grid-template-columns: 250px minmax(0,1fr);
+    column-gap: 18px; align-items: start;
+}
+.ah-layout .moi-message-identity { grid-column: 1; grid-row: 1; min-width: 0; }
+html.ah-layout #chat > .moi-has-message-pass .moi-message-identity .ch_name {
+    width: 100%; min-height: 30px; margin: 0 0 12px; padding: 0;
+    display: flex; justify-content: center;
+}
+html.ah-layout #chat > .moi-has-message-pass .moi-message-identity .mes_buttons {
+    margin: 0 !important; justify-content: center; opacity: .85;
+}
+html.ah-layout #chat > .moi-has-message-pass > .mes_block > :not(.moi-message-identity) {
+    grid-column: 2; min-width: 0;
+}
+html.ah-layout #chat > .moi-has-message-pass > .mes_block > .mes_text {
+    grid-column: 2; grid-row: 1; padding-top: 48px !important; margin-top: 0 !important;
+}
+@media (max-width: 520px) {
+    html.ah-layout #chat > .moi-has-message-pass > .mes_block { grid-template-columns: minmax(0,1fr); }
+    .ah-layout .moi-message-identity { grid-column: 1; grid-row: auto; }
+    .ah-layout .moi-message-pass { margin-left: auto; margin-right: auto; }
+    html.ah-layout #chat > .moi-has-message-pass > .mes_block > :not(.moi-message-identity),
+    html.ah-layout #chat > .moi-has-message-pass > .mes_block > .mes_text {
+        grid-column: 1; grid-row: auto; padding-top: 8px !important;
+    }
+}
+/* Prose flows around the hanging pass, then regains the full message width. */
+html.ah-layout #chat > .moi-has-message-pass > .mes_block { display: flow-root !important; }
+html.ah-layout #chat > .moi-has-message-pass .moi-message-identity {
+    float: left; width: 250px; margin: 0 18px 18px 0;
+}
+html.ah-layout #chat > .moi-has-message-pass > .mes_block > .mes_text {
+    display: block !important; width: auto !important; overflow: visible !important;
+    clear: none !important; padding-top: 48px !important;
+}
+html.ah-layout #chat > .moi-has-message-pass > .mes_block > .mes_text > p:first-child { margin-top: 0; }
+html.ah-layout #chat > .moi-has-message-pass .moi-message-pass { margin: 0 auto 8px; }
+@media (max-width:520px) {
+    html.ah-layout #chat > .moi-has-message-pass .moi-message-identity { width: 150px; margin-right: 12px; }
+    html.ah-layout #chat > .moi-has-message-pass .moi-message-pass { width: 150px; height: 225px; }
+    html.ah-layout #chat > .moi-has-message-pass .moi-message-pass-name { font-size: 16px; height: 25px; }
+    html.ah-layout #chat > .moi-has-message-pass .moi-message-pass-meta { font-size: 8px; line-height: 1.3; }
+    html.ah-layout #chat > .moi-has-message-pass > .mes_block > .mes_text { padding-top: 28px !important; }
+}
+/* Message interaction must not paint an opaque panel over the dotted backdrop. */
+html.ah-layout body #chat > .mes,
+html.ah-layout body #chat > .mes:is(:hover,:focus,:focus-within,:active,.selected,.mes_selected) {
+    background: transparent !important;
+    background-image: none !important;
+    box-shadow: none !important;
+}
+/* A quiet dashed rule separates consecutive messages. */
+html.ah-layout body #chat > .mes:not(:last-child) {
+    border-bottom: 1px dashed #cbbdd4 !important;
+    padding-bottom: 26px !important;
+    margin-bottom: 24px !important;
+}
+html.ah-layout body #chat > .mes:last-child { border-bottom: 0 !important; }

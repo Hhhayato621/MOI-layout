@@ -1,0 +1,78 @@
+/* One quiet milk-glass stationery tray, rather than two unrelated widgets. */
+html.ah-layout #moi-widget-dock:not([hidden]) {
+    padding: 48px 18px 28px;
+    background: rgba(250,248,244,.94) !important;
+    background-image: none !important;
+    border-left: 1px solid #fffdf9;
+    box-shadow: inset 1px 0 0 #fff, -8px 0 28px #97899912;
+    backdrop-filter: blur(16px) saturate(.8) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(.8) !important;
+}
+html.ah-layout #moi-widget-dock::before {
+    content: ''; position: absolute; z-index: -1; pointer-events: none;
+    top: 40px; left: 9px; right: 9px; bottom: 16px;
+    min-height: 580px;
+    border-radius: 22px;
+    background: rgba(255,254,250,.6);
+    border: 1px solid #fffefa;
+    box-shadow: inset 0 1px 0 #fff, inset 0 -1px 6px #aa99b009;
+}
+html.ah-layout #moi-widget-dock .moi-printer { margin: 0; padding: 0; }
+html.ah-layout #moi-widget-dock .moi-printer-scene {
+    width: 100%; height: 272px; margin: 0 auto;
+}
+html.ah-layout #moi-widget-dock .moi-printer-machine {
+    filter: drop-shadow(0 3px 4px #8d7b901a);
+}
+html.ah-layout #moi-widget-dock .moi-photo-print {
+    background: linear-gradient(100deg,#f4f0e9,#fffdfa 22%,#fbf8f2 80%,#ede7df);
+    border-color: #e7dfd5;
+    box-shadow: 0 3px 5px #82728a1c;
+}
+html.ah-layout #moi-widget-dock .moi-photo-caption {
+    color: #8b7c91; font-size: 14px; line-height: 1.5;
+}
+html.ah-layout #moi-widget-dock .moi-note-widget:not([hidden]) {
+    margin-top: 14px; padding-top: 0; border: 0 !important;
+}
+html.ah-layout #moi-widget-dock .moi-note-stage {
+    height: 154px; perspective: 650px;
+}
+html.ah-layout #moi-widget-dock .moi-note-ball {
+    width: 118px; height: 118px; top: 14px; left: 0; right: 0;
+}
+html.ah-layout #moi-widget-dock .moi-note-ball img {
+    filter: saturate(.65) brightness(1.05) drop-shadow(1px 4px 3px #82728a1c);
+}
+html.ah-layout #moi-widget-dock .moi-note-caption {
+    margin: 4px 0 0; padding: 0; background: transparent !important;
+    color: #8b7c91; font-size: 13px; line-height: 1.6;
+}
+html.ah-layout #moi-widget-dock .moi-note-widget.is-unfolded .moi-note-stage { height: auto; min-height: 280px; }
+html.ah-layout #moi-widget-dock .moi-note-paper {
+    top: 13px; filter: drop-shadow(0 3px 4px #82728a1c);
+}
+html.ah-layout #moi-widget-dock .moi-note-writing {
+    padding: 22px 15px 18px; color: #76677b;
+}
+html.ah-layout #moi-widget-dock .moi-note-body { color: #76677b; font-size: 15px; line-height: 1.95; }
+html.ah-layout #moi-widget-dock .moi-note-signature { color: #8b7c91; }
+html.ah-layout .moi-right-toggle {
+    width: 28px; height: 28px; top: 12px; right: 12px;
+    background: #faf8f2; border-color: #e6dfe8; border-radius: 50%;
+    color: #a18da9; box-shadow: inset 0 1px 0 #fff,0 2px 3px #82728a0c;
+    font-size: 21px;
+}
+/* Float the stationery tray below the header; keep its toggle independent. */
+html.ah-layout #moi-widget-dock:not([hidden]) {
+    top: 50px; right: 8px;
+    height: calc(100dvh - 64px);
+    width: calc(var(--ah-right) - 16px);
+    padding: 12px 10px 20px;
+    border: 1px solid #fffdf9;
+    border-radius: 22px;
+}
+html.ah-layout #moi-widget-dock::before { content: none; }
+@media (max-width:1119px) {
+    html.ah-layout #moi-widget-dock:not([hidden]) { width: 224px; }
+}

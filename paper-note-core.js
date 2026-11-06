@@ -1,7 +1,7 @@
 /** Choose messages before converting their content, so older messages never enter the prompt. */
-export function recentFive(messages) {
+export function recentThree(messages) {
     return messages.filter(message => !message.is_system && typeof message.mes === 'string' && message.mes.trim())
-        .slice(-5)
+        .slice(-3)
         .map(message => ({ name: message.name || (message.is_user ? '用户' : '角色'), isUser: !!message.is_user, text: message.mes }));
 }
 
