@@ -15,11 +15,11 @@ export function archiveTime(archive) {
 }
 export function newestFirst(a,b) { return archiveTime(b)-archiveTime(a); }
 export function invalidateArchives() { snapshot=undefined; pending=undefined; epoch++; }
-export async function characterArchives() {
+export async function characterArchives({ fresh = false } = {}) {
     const ctx=context();
     const characters=ctx.characters.filter(c=>c.avatar && c.avatar!=='none');
     const key=characters.map(c=>c.avatar).join('|');
-    if (snapshot?.key===key && Date.now()-snapshot.time<15000) return snapshot.rows;
+    if (!fresh && snapshot?.key===key && Date.now()-snapshot.time<15000) return snapshot.rows;
     if (pending?.key===key) return pending.promise;
     const version=epoch;
     const promise=(async()=>{
