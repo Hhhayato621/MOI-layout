@@ -1,22 +1,25 @@
 .moi-message-pass { display: none; }
 .ah-layout .moi-message-pass {
-    display: block; position: relative; width: 250px; height: 375px;
-    margin: 0 auto 8px 0; isolation: isolate;
+    display: block; position: relative; width: 250px; aspect-ratio: 32 / 39;
+    margin: 0 auto 8px 0; isolation: isolate; overflow: hidden;
 }
-.ah-layout .moi-message-pass-frame { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+.ah-layout .moi-message-pass-frame {
+    position: absolute; top: -23.08%; left: 0;
+    width: 100%; height: 123.08%; object-fit: contain; pointer-events: none;
+}
 .ah-layout .moi-message-pass-name {
-    position: absolute; top: 43%; left: 25%; width: 50%; height: 36px;
+    position: absolute; top: 30%; left: 25%; width: 50%; height: 36px;
     font-size: 21px; line-height: 1.3; color: #655a68;
     overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
 .ah-layout .moi-message-pass-photo {
-    position: absolute; top: 52%; left: 25%; width: 50%; height: 27%;
-    border: 4px solid #fffdf9; box-sizing: border-box; object-fit: cover; object-position: center 25%;
-    border-radius: 0; box-shadow: 0 2px 3px #6c5b7115;
+    position: absolute; top: 41%; left: 25%; width: 50%; height: 33%;
+    border: 3px solid #fffdf9; box-sizing: border-box; object-fit: cover; object-position: center 25%;
+    border-radius: 3px; box-shadow: 0 2px 3px #6c5b7115;
 }
 .ah-layout .moi-message-pass-meta {
-    position: absolute; top: 81%; left: 25%; width: 52%;
-    color: #817486; font-size: 11px; line-height: 1.45;
+    position: absolute; top: 76.5%; left: 25%; width: 52%;
+    color: #6f6178; font-size: 11px; line-height: 1.45;
 }
 .ah-layout .moi-message-pass-date { display: block; }
 .ah-layout #chat > .moi-has-message-pass > .mesAvatarWrapper { display: none !important; }
@@ -69,7 +72,7 @@ html.ah-layout #chat > .moi-has-message-pass > .mes_block > .mes_text > p:first-
 html.ah-layout #chat > .moi-has-message-pass .moi-message-pass { margin: 0 auto 8px; }
 @media (max-width:520px) {
     html.ah-layout #chat > .moi-has-message-pass .moi-message-identity { width: 150px; margin-right: 12px; }
-    html.ah-layout #chat > .moi-has-message-pass .moi-message-pass { width: 150px; height: 225px; }
+    html.ah-layout #chat > .moi-has-message-pass .moi-message-pass { width: 150px; }
     html.ah-layout #chat > .moi-has-message-pass .moi-message-pass-name { font-size: 16px; height: 25px; }
     html.ah-layout #chat > .moi-has-message-pass .moi-message-pass-meta { font-size: 8px; line-height: 1.3; }
     html.ah-layout #chat > .moi-has-message-pass > .mes_block > .mes_text { padding-top: 28px !important; }
@@ -88,16 +91,32 @@ html.ah-layout body #chat > .mes:not(:last-child) {
     margin-bottom: 24px !important;
 }
 html.ah-layout body #chat > .mes:last-child { border-bottom: 0 !important; }
+
+/* Underline speech like a pencil annotation and give emphasis a soft marker stroke. */
+html.ah-layout body #chat > .mes .mes_text q:not(:where(pre *, code *, button *)) {
+    color: #59456c;
+    text-decoration: underline #9c82b3;
+    text-decoration-thickness: 1px;
+    text-underline-offset: .25em;
+}
+html.ah-layout body #chat > .mes .mes_text :is(strong, b):not(:where(pre *, code *, button *)) {
+    color: #5f4658;
+    background: linear-gradient(102deg, #e9cdd98f, #e3c1d1bf 35%, #e9cdd98f)
+        0 84% / 100% .45em no-repeat;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+}
+
 /* Fill the mobile identity column instead of displaying the asset's transparent side margins. */
 @media(max-width:520px) {
     html.ah-layout body #chat > .moi-has-message-pass .moi-message-identity {
         width: min(46%,180px); margin-right:12px;
     }
     html.ah-layout body #chat > .moi-has-message-pass .moi-message-pass {
-        width:100%; height:auto; aspect-ratio:5/12; margin-bottom:2px;
+        width:100%; aspect-ratio:20/39; margin-bottom:2px;
     }
     html.ah-layout body #chat > .moi-has-message-pass .moi-message-pass-frame {
-        width:160%; height:100%; left:-30%; right:auto; object-fit:fill;
+        width:160%; left:-30%; object-fit:fill;
     }
     html.ah-layout body #chat > .moi-has-message-pass .moi-message-pass-name {
         left:10%; width:80%; font-size:18px; height:28px;
