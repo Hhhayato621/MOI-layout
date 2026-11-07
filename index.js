@@ -1,4 +1,3 @@
-import { installShareSettings } from './share-settings.js';
 import { installPocketMusic } from './pocket-music.js';
 import { installMessagePasses } from './message-pass.js';
 import { installComposer } from './composer.js';
@@ -218,5 +217,3 @@ void installPocketMusic();
 installComposer();
 
 installMessagePasses();
-
-installShareSettings();
