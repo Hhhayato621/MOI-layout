@@ -1,0 +1,29 @@
+/* Avoid stacking live blur layers while retaining the soft stationery palette. */
+@media (max-width:759px), (hover:none) and (pointer:coarse) {
+    html.ah-layout body #bg1 {filter:none!important;}
+    html.ah-layout body #top-settings-holder::before,
+    html.ah-layout body #moi-widget-dock:not([hidden]),
+    html.ah-layout body #top-settings-holder#top-settings-holder .drawer-content,
+    html.ah-layout body .ah-folder-cover,
+    html.ah-layout body .ah-receipt,
+    html.ah-layout body .ah-header,
+    html.ah-layout body #send_form {
+        backdrop-filter:none!important; -webkit-backdrop-filter:none!important;
+    }
+    html.ah-layout body .ah-folder-cover {
+        background:linear-gradient(135deg,#ffffffa6,#f2edf7ad)!important;
+        box-shadow:inset 0 1px 0 #fff,0 3px 10px #89739e10;
+    }
+    html.ah-layout body .ah-header {background:#fffc;}
+    html.ah-layout body #moi-widget-dock:not([hidden]) {background:#faf8f4f5!important;box-shadow:0 2px 8px #89739e15!important;}
+    html.ah-layout body .moi-note-facets {display:none;}
+    html.ah-layout body .moi-note-paper {background:#faf6eb url('./paper-creases.jpg') center/100% 100%;}
+    html.ah-layout body .moi-note-stage {perspective:none;transition:none;}
+    html.ah-layout body .moi-note-paper,
+    html.ah-layout body .moi-note-ball {transition:transform 220ms ease,opacity 180ms ease;filter:none!important;}
+    html.ah-layout body .moi-note-writing {transition:opacity 180ms ease;}
+    html.ah-layout body .ah-folder-cover,
+    html.ah-layout body .ah-folder-photo {transition:transform 180ms ease;}
+    html.ah-layout body .moi-printer-machine,
+    html.ah-layout body .moi-note-ball img {filter:none!important;}
+}

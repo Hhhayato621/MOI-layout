@@ -1,5 +1,7 @@
 const asset = new URL('./message-pass.png', import.meta.url).href;
 let queued = false;
+let reconcileAll = false;
+const dirtyMessages = new Set();
 function node(tag, cls, text) {
     const n = document.createElement(tag); n.className = cls;
     if (text) n.textContent = text;
@@ -7,7 +9,10 @@ function node(tag, cls, text) {
 }
 function updatePasses() {
     queued = false;
-    for (const mes of document.querySelectorAll('#chat > .mes')) {
+    const messages=reconcileAll?document.querySelectorAll('#chat > .mes'):[...dirtyMessages];
+    reconcileAll=false;dirtyMessages.clear();
+    for (const mes of messages) {
+        if(!mes.isConnected)continue;
         const block = mes.querySelector('.mes_block');
         const avatar = mes.querySelector('.mesAvatarWrapper .avatar img');
         if (!block || !avatar) continue;
@@ -31,9 +36,9 @@ function updatePasses() {
         if (!badge) { badge = node('section','moi-message-pass'); identity.prepend(badge); }
         badge.dataset.signature = signature;
         badge.setAttribute('aria-label', name + '的消息证件牌');
-        const frame = node('img','moi-message-pass-frame'); frame.src=asset;frame.alt='';
+        const frame = node('img','moi-message-pass-frame'); frame.src=asset;frame.alt='';frame.decoding='async';frame.loading='lazy';
         const title = node('div','moi-message-pass-name',name); title.title=name;
-        const portrait = node('img','moi-message-pass-photo');portrait.src=src;portrait.alt=name;
+        const portrait = node('img','moi-message-pass-photo');portrait.src=src;portrait.alt=name;portrait.decoding='async';portrait.loading='lazy';
         const meta = node('div','moi-message-pass-meta');
         meta.append(node('time','moi-message-pass-date', date || '时间未记录'),
             node('div','moi-message-pass-tokens','Tokens  ' + tokens),
@@ -42,7 +47,8 @@ function updatePasses() {
         mes.classList.add('moi-has-message-pass');
     }
 }
-function schedule() {
+function schedule(message) {
+    if(message instanceof Element)dirtyMessages.add(message);else reconcileAll=true;
     if (queued) return;
     queued=true; requestAnimationFrame(updatePasses);
 }
@@ -50,15 +56,20 @@ export function installMessagePasses() {
     const chat=document.getElementById('chat');
     if (!chat) return;
     new MutationObserver(records => {
-        if (records.some(record => {
+        for(const record of records) {
             const target=record.target.nodeType===1?record.target:record.target.parentElement;
-            if (target?.closest('.moi-message-pass,.mes_text')) return false;
-            return target===chat || target?.closest('.mesAvatarWrapper,.ch_name') || record.type==='attributes';
-        })) schedule();
+            if(target?.closest('.moi-message-pass,.mes_text'))continue;
+            if(target===chat) {
+                for(const added of record.addedNodes)if(added.nodeType===1&&added.matches('.mes'))schedule(added);
+            } else {
+                const message=target?.closest('#chat > .mes');
+                if(message&&(target.closest('.mesAvatarWrapper,.ch_name')||record.type==='attributes'))schedule(message);
+            }
+        }
     }).observe(chat,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['ch_name','timestamp','src','mesid']});
     const {eventSource,eventTypes}=SillyTavern.getContext();
     for (const name of ['CHAT_CHANGED','MESSAGE_RECEIVED','MESSAGE_UPDATED','CHARACTER_MESSAGE_RENDERED','USER_MESSAGE_RENDERED','MESSAGE_SWIPED']) {
-        if (eventTypes[name]) eventSource.on(eventTypes[name],schedule);
+        if (eventTypes[name]) eventSource.on(eventTypes[name],()=>schedule());
     }
     schedule();
 }

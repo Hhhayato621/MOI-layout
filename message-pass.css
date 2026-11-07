@@ -88,3 +88,24 @@ html.ah-layout body #chat > .mes:not(:last-child) {
     margin-bottom: 24px !important;
 }
 html.ah-layout body #chat > .mes:last-child { border-bottom: 0 !important; }
+/* Fill the mobile identity column instead of displaying the asset's transparent side margins. */
+@media(max-width:520px) {
+    html.ah-layout body #chat > .moi-has-message-pass .moi-message-identity {
+        width: min(46%,180px); margin-right:12px;
+    }
+    html.ah-layout body #chat > .moi-has-message-pass .moi-message-pass {
+        width:100%; height:auto; aspect-ratio:5/12; margin-bottom:2px;
+    }
+    html.ah-layout body #chat > .moi-has-message-pass .moi-message-pass-frame {
+        width:160%; height:100%; left:-30%; right:auto; object-fit:fill;
+    }
+    html.ah-layout body #chat > .moi-has-message-pass .moi-message-pass-name {
+        left:10%; width:80%; font-size:18px; height:28px;
+    }
+    html.ah-layout body #chat > .moi-has-message-pass .moi-message-pass-photo {left:10%;width:80%;border-width:3px;}
+    html.ah-layout body #chat > .moi-has-message-pass .moi-message-pass-meta {left:10%;width:82%;font-size:10px;line-height:1.4;}
+    html.ah-layout body #chat > .moi-has-message-pass .moi-message-identity .ch_name {min-height:30px;margin-bottom:5px;}
+    html.ah-layout body #chat > .moi-has-message-pass .moi-message-identity .mes_button {
+        font-size:12px!important; min-width:28px; min-height:30px; padding:6px;box-sizing:border-box;
+    }
+}

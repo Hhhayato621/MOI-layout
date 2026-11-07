@@ -19,19 +19,20 @@ async function store(action,value) {
         transaction.oncomplete=()=>resolve(result);transaction.onerror=()=>reject(transaction.error);transaction.onabort=()=>reject(transaction.error);
     });
 }
-function showStatus(text) {status.textContent=text;}
+function setText(node,text) {if(node.textContent!==text)node.textContent=text;}
+function showStatus(text) {setText(status,text);}
 function renderScreen() {
     const track=tracks[current];
-    screenTitle.textContent=track?.name || 'MOI music';
+    setText(screenTitle,track?.name || 'MOI music');
     screenTitle.title=track?.name || '点击十字键中间，导入音乐';
-    lyrics.textContent='';
-    time.textContent=clock(audio.currentTime)+' / '+clock(audio.duration);
+    setText(lyrics,'');
+    setText(time,clock(audio.currentTime)+' / '+clock(audio.duration));
     const ratio=audio.duration?audio.currentTime/audio.duration:0;
     progress.style.setProperty('--played',`${Math.min(100,Math.max(0,ratio*100))}%`);
     progress.setAttribute('aria-valuenow',String(Math.round(ratio*100)||0));
     play.setAttribute('aria-label',audio.paused?'播放音乐':'暂停音乐');
     play.title=audio.paused?'播放音乐':'暂停音乐';
-    play.textContent=audio.paused?'▶':'Ⅱ';
+    setText(play,audio.paused?'▶':'Ⅱ');
     music.classList.toggle('is-playing',!audio.paused);
 }
 async function start() {

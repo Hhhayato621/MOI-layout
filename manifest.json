@@ -1,8 +1,10 @@
 {
-    "display_name": "MOI",
-    "loading_order": 100,
-    "js": "index.js",
-    "author": "Bella",
-    "version": "1.4.0",
-    "css": "folder-home.css"
+  "display_name": "MOI",
+  "loading_order": 100,
+  "js": "index.js",
+  "author": "Bella",
+  "version": "1.5.1",
+  "css": "folder-home.css",
+  "homePage": "https://github.com/Hhhayato621/MOI-layout",
+  "auto_update": false
 }
