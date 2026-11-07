@@ -1,5 +1,5 @@
 import { characterArchives, conversationMessages } from './archive-data.js';
-import { recentThree, notePrompt } from './paper-note-core.js';
+import { recentThree, notePrompt, fitNote } from './paper-note-core.js';
 const context = () => SillyTavern.getContext();
 let widget;
 let body;
@@ -143,7 +143,7 @@ async function createNote() {
                 const prompt=notePrompt(character.name,last,plainText);
                 // Leave room for models that share their output limit with reasoning.
                 text=String(await ctx.generateRaw({...prompt,responseLength:1024,trimNames:false})).trim();
-                text=text.replace(/<think>[\s\S]*?<\/think>/gi,'').trim();
+                text=fitNote(text);
                 if(!text) throw new Error('模型没有返回留言，请重试');
                 notes.set(key,text);
             }
