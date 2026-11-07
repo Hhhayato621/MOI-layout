@@ -12,7 +12,7 @@
 .ah-layout #send_form::before, .ah-layout #send_form::after { content: none !important; }
 .ah-layout #send_form { padding: 4px 8px !important; gap: 7px; }
 .ah-layout #send_form #send_textarea { color: #756d80 !important; min-width: 0; }
-.ah-layout #send_form #send_textarea::placeholder { color: #93889f; opacity: 1; font-family: "MOI Smile", cursive; font-size: 15px; }
+.ah-layout #send_form #send_textarea::placeholder { color: #93889f; opacity: 1; font-family: var(--moi-active-font); font-size: 15px; }
 .ah-layout #send_form :is(#options_button,#extensionsMenuButton,#send_but) {
     display: grid; place-items: center; flex: 0 0 34px;
     width: 34px !important; height: 38px !important; min-width: 34px;

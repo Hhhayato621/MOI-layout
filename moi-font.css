@@ -1,8 +1,28 @@
 @font-face { font-family: "MOI Smile"; src: url('./HongleiYouth.woff2') format('woff2'); font-style: normal; font-weight: 400; font-display: swap; size-adjust: 110%; }
-html.ah-layout { --mainFontFamily: "MOI Smile", "Kaiti SC", cursive; }
+html.ah-layout {
+    --moi-font-original: "MOI Smile", "Kaiti SC", KaiTi, cursive;
+    --moi-font-clean: "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", system-ui, sans-serif;
+    --moi-font-interface-custom: "MOI Custom Interface", var(--moi-font-clean);
+    --moi-font-chat-custom: "MOI Custom Chat", var(--moi-font-clean);
+    --moi-interface-family: var(--moi-font-original);
+    --moi-chat-family: var(--moi-interface-family);
+    --moi-active-font: var(--moi-interface-family);
+    --mainFontFamily: var(--moi-active-font);
+}
+html.ah-layout[data-moi-interface-font="clean"] { --moi-interface-family: var(--moi-font-clean); }
+html.ah-layout[data-moi-interface-font="custom"] { --moi-interface-family: var(--moi-font-interface-custom); }
+html.ah-layout[data-moi-chat-font="clean"] { --moi-chat-family: var(--moi-font-clean); }
+html.ah-layout[data-moi-chat-font="original"] { --moi-chat-family: var(--moi-font-original); }
+html.ah-layout[data-moi-chat-font="custom"] { --moi-chat-family: var(--moi-font-chat-custom); }
+
+html.ah-layout.moi-character-chat:not(.ah-folder-home-visible) :is(#chat > .mes, .ah-header, #send_form) {
+    --moi-active-font: var(--moi-chat-family);
+    --mainFontFamily: var(--moi-active-font);
+}
+html.ah-layout body { --mainFontFamily: var(--moi-active-font); }
 html.ah-layout body,
-html.ah-layout body :where(div,span,p,q,a,label,small,strong,em,h1,h2,h3,h4,h5,h6,input,textarea,select,option,button,summary,li,td,th):not([class*="fa-"]):not(.fa):not(.drawer-icon):not(.codicon) {
-    font-family: "MOI Smile", "Kaiti SC", cursive !important;
+html.ah-layout body :where(div,span,p,q,a,label,small,strong,em,b,h1,h2,h3,h4,h5,h6,input,textarea,select,option,button,summary,li,td,th):not([class*="fa-"]):not(.fa):not(.drawer-icon):not(.codicon) {
+    font-family: var(--moi-active-font) !important;
     font-weight: 400 !important;
     -webkit-text-stroke: 0;
 }
@@ -13,3 +33,111 @@ html.ah-layout body :where(div,span,p,q,a,label,small,strong,em,h1,h2,h3,h4,h5,h
     html.ah-layout #user-settings-block [name="userSettingsRowOne"] h3 { white-space: nowrap; }
     html.ah-layout #user-settings-block #version_display { font-size: 12px; overflow-wrap: anywhere; }
 }
+
+
+html.ah-layout #ah-channels .ah-brand { position: relative; }
+html.ah-layout #ah-channels .moi-font-toggle {
+    position: absolute;
+    inset-inline-end: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    display: grid;
+    place-items: center;
+    box-sizing: border-box;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: #675473;
+    font-size: 13px;
+    line-height: 1;
+    letter-spacing: 0;
+    cursor: pointer;
+}
+html.ah-layout #ah-channels .moi-font-toggle:is(:hover, :focus-visible) { background: #e9dff2; }
+
+.moi-font-dialog {
+    --moi-active-font: var(--moi-font-clean, system-ui, sans-serif);
+    font-family: var(--moi-active-font);
+    box-sizing: border-box;
+    width: min(360px, calc(100% - 28px));
+    max-height: calc(100% - 32px);
+    margin: auto;
+    padding: 20px;
+    overflow: auto;
+    color: #51455b;
+    background: #fbf8f3;
+    border: 1px solid #fff;
+    border-radius: 18px;
+    box-shadow: 0 14px 42px #3f2b5029;
+    color-scheme: light;
+}
+.moi-font-dialog::backdrop { background: #443a533f; }
+.moi-font-dialog form { display: grid; gap: 9px; margin: 0; }
+.moi-font-dialog-header { display: flex; align-items: center; justify-content: space-between; }
+.moi-font-dialog-header h2 { font-size: 19px; margin: 0; }
+.moi-font-dialog .moi-font-close {
+    min-width: 44px;
+    min-height: 44px;
+    background: transparent;
+    color: #655473;
+    border: 0;
+    border-radius: 8px;
+    font-size: 23px;
+    cursor: pointer;
+}
+.moi-font-dialog .moi-font-field { display: grid; gap: 6px; font-size: 13px; }
+.moi-font-dialog :is(select, input) {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 44px;
+    margin: 0;
+    padding: 7px 9px;
+    border: 1px solid #d8cce0;
+    border-radius: 9px;
+    background: #fffdfa;
+    color: #51455b;
+    font-size: 16px;
+}
+.moi-font-dialog input::file-selector-button {
+    color: #51455b;
+    border: 0;
+    border-radius: 5px;
+    margin-inline-end: 8px;
+    padding: 3px 5px;
+    background: #eee6f3;
+}
+.moi-font-dialog .moi-font-source { display: grid; gap: 8px; }
+.moi-font-dialog [hidden], .moi-font-dialog .moi-font-status:empty { display: none; }
+.moi-font-dialog :is(.moi-font-hint, .moi-font-status) {
+    margin: 0;
+    color: #685970;
+    font-size: 12px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+.moi-font-dialog .moi-font-status { color: #834763; }
+.moi-font-dialog .moi-font-preview {
+    margin: 0;
+    padding: 9px;
+    border-radius: 9px;
+    text-align: center;
+    background: #f0ebf3;
+    color: #534361;
+    font-size: 17px;
+}
+.moi-font-preview[data-preview="original"] { --moi-active-font: var(--moi-font-original); }
+.moi-font-preview[data-preview="interface"] { --moi-active-font: var(--moi-font-interface-custom); }
+.moi-font-preview[data-preview="chat"] { --moi-active-font: var(--moi-font-chat-custom); }
+.moi-font-dialog .moi-font-save {
+    min-height: 44px;
+    margin-top: 3px;
+    border: 1px solid #d8cce0;
+    border-radius: 9px;
+    color: #51405e;
+    background: #eee5f3;
+    cursor: pointer;
+}
+.moi-font-dialog :focus-visible { outline: 2px solid #8a729b; outline-offset: 2px; }

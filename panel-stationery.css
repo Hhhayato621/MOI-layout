@@ -8,7 +8,7 @@ html.ah-layout body .popup {
     --SmartThemeBorderColor: #ded7e5;
     --SmartThemeShadowColor: transparent;
     --SmartThemeUnderlineColor: #baa9c6;
-    --mainFontFamily: "MOI Smile", "Kaiti SC", cursive;
+    --mainFontFamily: var(--moi-active-font);
     color: #655d70 !important;
     background-color: #faf9f7 !important;
     background-image: linear-gradient(#fcfbf9ba,#fcfbf9ba),url('./moi-background.jpg') !important;
@@ -18,13 +18,13 @@ html.ah-layout body .popup {
     border: 1px solid #fff !important;
     box-shadow: inset 0 1px 0 #fff,0 6px 22px #81738c18 !important;
     backdrop-filter: blur(3px) !important; -webkit-backdrop-filter: blur(3px) !important;
-    font-family: "MOI Smile", "Kaiti SC", cursive !important;
+    font-family: var(--moi-active-font) !important;
     scrollbar-color: #c4b8ce transparent; scrollbar-width: thin;
     color-scheme: light;
 }
 html.ah-layout #top-settings-holder .drawer-content :where(div,span,label,p,small,strong,em,h1,h2,h3,h4,h5,input,textarea,select,option,button,summary):not([class*="fa-"]):not(.fa):not(.drawer-icon),
 html.ah-layout .popup :where(label,p,small,strong,h2,h3,h4,input,textarea,select,option,button):not([class*="fa-"]) {
-    font-family: "MOI Smile", "Kaiti SC", cursive !important;
+    font-family: var(--moi-active-font) !important;
     text-shadow: none !important;
 }
 html.ah-layout #top-settings-holder .drawer-content :where(div,span,label,p,small,strong,em,h1,h2,h3,h4,h5) { text-shadow: none !important; }

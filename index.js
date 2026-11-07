@@ -1,3 +1,4 @@
+import { initializeFonts, openFontSettings } from './font-settings.js';
 import { installPocketMusic } from './pocket-music.js';
 import { installMessagePasses } from './message-pass.js';
 import { installComposer } from './composer.js';
@@ -75,7 +76,13 @@ function mount() {
     back.setAttribute('aria-hidden', 'true');
     back.innerHTML = '<svg viewBox="0 0 40 112" fill="none" stroke="#877496" stroke-width="1"><path d="M12 106Q34 74 26 11"/><path d="M27 32Q9 27 15 11Q26 16 27 32M28 46Q44 40 37 24Q27 30 28 46M27 61Q8 55 11 40Q26 44 27 61M24 74Q43 70 39 53Q27 56 24 74M18 91Q3 82 5 68Q20 72 18 91"/></svg>';
     const receipt = element('div', 'ah-receipt');
-    receipt.append(element('div', 'ah-brand', 'MOI'), list, element('div', 'ah-receipt-foot', 'Continue...'));
+    const brand = element('div', 'ah-brand', 'MOI');
+    const fonts = button('Aa', openFontSettings, 'moi-font-toggle');
+    fonts.setAttribute('aria-label', '字体设置');
+    fonts.setAttribute('aria-haspopup', 'dialog');
+    fonts.title = '字体设置';
+    brand.append(fonts);
+    receipt.append(brand, list, element('div', 'ah-receipt-foot', 'Continue...'));
     sidebar.append(back, receipt);
 
     const style = element('style', '');
@@ -154,6 +161,7 @@ async function refresh() {
     const character = ctx.characters[ctx.characterId];
     const group = ctx.groups.find(item => String(item.id) === String(ctx.groupId));
     const chatId = ctx.getCurrentChatId();
+    root.classList.toggle('moi-character-chat', Boolean(character && !group && chatId));
     shell.title.textContent = group?.name || character?.name || '欢迎来到 MOI';
     const selected = group
         ? (group.members || []).map(avatar => ctx.characters.find(item => item.avatar === avatar)).filter(Boolean)
@@ -203,7 +211,7 @@ new MutationObserver(() => {
 }).observe(document.head, { childList: true, subtree: true, characterData: true });
 wideLayout.addEventListener('change', closeChannels);
 document.addEventListener('keydown', event => {
-    if (event.key === 'Escape' && root.classList.contains('ah-channels-open')) closeChannels();
+    if (event.key === 'Escape' && !document.getElementById('moi-font-settings')?.open && root.classList.contains('ah-channels-open')) closeChannels();
 });
 void refresh();
 
@@ -217,3 +225,5 @@ void installPocketMusic();
 installComposer();
 
 installMessagePasses();
+
+void initializeFonts();
