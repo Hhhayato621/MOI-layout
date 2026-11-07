@@ -25,6 +25,24 @@ function control(text, className, callback) {
     return button;
 }
 
+function revealPaper() {
+    if (!matchMedia('(max-width: 1119px)').matches) return;
+    requestAnimationFrame(() => {
+        const dock = widget.closest('#moi-widget-dock');
+        if (!expanded || !dock?.clientHeight) return;
+
+        const visibleTop = dock.getBoundingClientRect().top + dock.clientTop + 12;
+        const visibleBottom = visibleTop + dock.clientHeight - 24;
+        const note = widget.getBoundingClientRect();
+        // If the note is taller than the tray, reveal its start and let the tray scroll.
+        if (note.height > visibleBottom - visibleTop || note.top < visibleTop) {
+            dock.scrollTop += note.top - visibleTop;
+        } else if (note.bottom > visibleBottom) {
+            dock.scrollTop += note.bottom - visibleBottom;
+        }
+    });
+}
+
 function mount() {
     widget = make('section', 'moi-note-widget');
     widget.setAttribute('aria-label', '角色纸条留言');
@@ -33,6 +51,7 @@ function mount() {
         expanded = true;
         widget.classList.add('is-unfolded');
         opener.setAttribute('aria-expanded', 'true');
+        revealPaper();
         void prepareNote();
     });
     opener.setAttribute('aria-label', '展开角色的纸团留言');
@@ -122,7 +141,8 @@ async function createNote() {
                 if(ctx.onlineStatus==='no_connection') throw new Error('请先连接模型，再点击纸团');
                 status.textContent='正在写下留言…';
                 const prompt=notePrompt(character.name,last,plainText);
-                text=String(await ctx.generateRaw({...prompt,responseLength:220,trimNames:false})).trim();
+                // Leave room for models that share their output limit with reasoning.
+                text=String(await ctx.generateRaw({...prompt,responseLength:1024,trimNames:false})).trim();
                 text=text.replace(/<think>[\s\S]*?<\/think>/gi,'').trim();
                 if(!text) throw new Error('模型没有返回留言，请重试');
                 notes.set(key,text);
@@ -142,7 +162,10 @@ async function prepareNote() {
     generation=createNote();
     try { await generation; }
     catch(error) { status.textContent=error.message||'留言暂时未能送达，请稍后重试'; }
-    finally { generation=undefined; }
+    finally {
+        generation=undefined;
+        if (expanded) revealPaper();
+    }
 }
 
 export function installPaperNote() {

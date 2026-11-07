@@ -66,7 +66,6 @@
     .moi-note-ball { width: 65px; height: 65px; top: 0; left: auto; right: 0; }
     .moi-note-widget.is-unfolded { width: min(280px,calc(100vw - var(--tw-rail) - 24px)) !important; }
     .moi-note-widget.is-unfolded .moi-note-stage { min-height: 240px; }
-    .moi-note-widget.is-unfolded .moi-note-paper { max-height: 58dvh; overflow: auto; }
     .moi-note-widget.is-unfolded .moi-note-status,
     .moi-note-widget.is-unfolded .moi-note-caption { display: block; background: #faf7fded; padding: 3px 6px; border-radius: 5px; }
     .moi-note-widget.is-unfolded .moi-note-tools { background: #faf7fded; padding: 4px; border-radius: 6px; }
@@ -80,5 +79,8 @@
 }
 .moi-note-widget.is-unfolded .moi-note-writing { max-height: 52dvh; overflow: auto; scrollbar-width: thin; scrollbar-color: #c9b9d1 transparent; }
 @media (max-width:1119px) {
-    .moi-note-widget.is-unfolded .moi-note-paper { max-height: none; overflow: visible; }
+    #moi-widget-dock .moi-note-widget.is-unfolded .moi-note-writing {
+        max-height: none;
+        overflow: visible;
+    }
 }

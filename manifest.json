@@ -3,7 +3,7 @@
   "loading_order": 100,
   "js": "index.js",
   "author": "Bella",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "css": "folder-home.css",
   "homePage": "https://github.com/Hhhayato621/MOI-layout",
   "auto_update": false
