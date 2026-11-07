@@ -1,5 +1,4 @@
-
-/* Optional handwriting font is imported locally through MOI settings. */
+@font-face { font-family: "MOI Smile"; src: url('./HongleiYouth.woff2') format('woff2'); font-style: normal; font-weight: 400; font-display: swap; size-adjust: 110%; }
 html.ah-layout { --mainFontFamily: "MOI Smile", "Kaiti SC", cursive; }
 html.ah-layout body,
 html.ah-layout body :where(div,span,p,q,a,label,small,strong,em,h1,h2,h3,h4,h5,h6,input,textarea,select,option,button,summary,li,td,th):not([class*="fa-"]):not(.fa):not(.drawer-icon):not(.codicon) {
