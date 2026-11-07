@@ -1,4 +1,4 @@
-import { characterArchives, conversationMessages } from './archive-data.js';
+import { archiveTime, characterArchives, conversationMessages, newestFirst } from './archive-data.js';
 import { recentThree, notePrompt, fitNote } from './paper-note-core.js';
 const context = () => SillyTavern.getContext();
 let widget;
@@ -116,45 +116,78 @@ function plainText(text) {
 function refresh() {
     widget.hidden=getComputedStyle(document.documentElement).getPropertyValue('--ah-theme').trim()!=='enabled';
 }
+
+async function findLatestConversation(rows, readArchive) {
+    const candidates = rows.flatMap(row => row.archives
+        .filter(archive => Number(archive.chat_items ?? archive.message_count) !== 0)
+        .map(archive => ({ row, archive, time: archiveTime(archive) })));
+    candidates.sort((a, b) => b.time - a.time);
+
+    let latest;
+    for (const { row, archive, time } of candidates) {
+        // The preview can include a trailing system message. Check any archive
+        // that could still contain a more recent real turn.
+        if (latest && time > 0 && time < latest.time) continue;
+        const messages = await readArchive(row.character, archive);
+        if (!messages.some(message => message.is_user === true)) continue;
+        const lastTurnTime = archiveTime({ last_mes: messages.at(-1).send_date }) || time;
+        if (!latest || lastTurnTime > latest.time) latest = { row, time: lastTurnTime };
+    }
+    return latest?.row;
+}
+
 async function createNote() {
     const ctx=context();
     body.textContent=''; signature.textContent='';
+    caption.textContent='';
     status.textContent='正在找一张纸条…';
-    const rows=await characterArchives();
-    const candidates=rows.filter(row=>row.archives.some(a=>Number(a.chat_items??a.message_count)>=3));
-    // Each character gets one equal chance, regardless of archive count.
-    while(candidates.length) {
-        const index=Math.floor(Math.random()*candidates.length);
-        const [{character,archives}]=candidates.splice(index,1);
-        for(const archive of archives.filter(a=>Number(a.chat_items??a.message_count)>=3)) {
-            const file=String(archive.file_id||archive.file_name).replace(/\.jsonl$/i,'');
-            const response=await fetch('/api/chats/get',{method:'POST',headers:ctx.getRequestHeaders(),body:JSON.stringify({avatar_url:character.avatar,file_name:file})});
-            if(!response.ok) throw new Error('聊天存档读取失败');
-            const data=await response.json();
-            const messages=conversationMessages(Array.isArray(data)?data:[]);
-            if(messages.length<3) continue;
-            const last=recentThree(messages);
-            caption.textContent=character.name+' 的纸条';
-            const key=JSON.stringify([character.avatar,file,last]);
-            let text=notes.get(key);
-            if(!text) {
-                if(ctx.onlineStatus==='no_connection') throw new Error('请先连接模型，再点击纸团');
-                status.textContent='正在写下留言…';
-                const prompt=notePrompt(character.name,last,plainText);
-                // Leave room for models that share their output limit with reasoning.
-                text=String(await ctx.generateRaw({...prompt,responseLength:1024,trimNames:false})).trim();
-                text=fitNote(text);
-                if(!text) throw new Error('模型没有返回留言，请重试');
-                notes.set(key,text);
-            }
-            body.textContent=text;
-            signature.textContent='— '+character.name;
-            status.textContent='';
-            return;
-        }
+    const archiveMessages = new Map();
+    const readArchive = async (character, archive) => {
+        if (archiveMessages.has(archive)) return archiveMessages.get(archive);
+        const file = String(archive.file_id || archive.file_name).replace(/\.jsonl$/i, '');
+        const response = await fetch('/api/chats/get', {
+            method: 'POST',
+            headers: ctx.getRequestHeaders(),
+            body: JSON.stringify({ avatar_url: character.avatar, file_name: file }),
+        });
+        if (!response.ok) throw new Error('聊天存档读取失败');
+        const data = await response.json();
+        const messages = conversationMessages(Array.isArray(data) ? data : []);
+        archiveMessages.set(archive, messages);
+        return messages;
+    };
+    const rows = await characterArchives({ fresh: true });
+    const latest = await findLatestConversation(rows, readArchive);
+    if(!latest) {
+        caption.textContent='还没有可投递的纸条';
+        status.textContent='和角色聊过之后，就能收到纸条';
+        return;
     }
-    caption.textContent='还没有可投递的纸条';
-    status.textContent=rows.some(row=>row.error)?'部分存档读取失败，请稍后重试':'需要至少有一个包含 3 条对话的角色存档';
+    const {character,archives}=latest;
+    caption.textContent=character.name+' 的纸条';
+    const eligibleArchives = archives.filter(a => Number(a.chat_items ?? a.message_count) >= 3).sort(newestFirst);
+    for(const archive of eligibleArchives) {
+        const messages = await readArchive(character, archive);
+        if(messages.length<3) continue;
+        const last=recentThree(messages);
+        const key=JSON.stringify([character.avatar,archive.file_id||archive.file_name,last]);
+        let text=notes.get(key);
+        if(!text) {
+            if(ctx.onlineStatus==='no_connection') throw new Error('请先连接模型，再点击纸团');
+            status.textContent='正在写下留言…';
+            const prompt=notePrompt(character.name,last,plainText);
+            // Leave room for models that share their output limit with reasoning.
+            text=String(await ctx.generateRaw({...prompt,responseLength:1024,trimNames:false})).trim();
+            text=fitNote(text);
+            if(!text) throw new Error('模型没有返回留言，请重试');
+            notes.set(key,text);
+        }
+        body.textContent=text;
+        signature.textContent='— '+character.name;
+        status.textContent='';
+        return;
+    }
+    status.textContent='这个角色还没有包含 3 条对话的存档';
 }
 async function prepareNote() {
     refresh();
