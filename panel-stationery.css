@@ -1,4 +1,12 @@
 /* MOI utility panels: the supplied dotted backdrop behind a quiet milky surface. */
+html.ah-layout body:has(#top-settings-holder .drawer-content.openDrawer) > :is(.ah-clip, #ah-channels, .moi-right-toggle, #moi-widget-dock) {
+    visibility: hidden;
+    pointer-events: none;
+}
+html.ah-layout body #top-settings-holder .drawer-content.openDrawer {
+    z-index: 3015 !important;
+}
+
 html.ah-layout body #top-settings-holder .drawer-content,
 html.ah-layout body .popup {
     --SmartThemeBodyColor: #655d70;
@@ -56,6 +64,20 @@ html.ah-layout #top-settings-holder .drawer-content input[type=range]::-webkit-s
 html.ah-layout #top-settings-holder .drawer-content ::-webkit-scrollbar { width: 5px; height: 5px; }
 html.ah-layout #top-settings-holder .drawer-content ::-webkit-scrollbar-thumb { background: #c9bbd3; border: 1px solid #f8f5f9; border-radius: 9px; }
 html.ah-layout #top-settings-holder .drawer-content ::-webkit-scrollbar-track { background: transparent; }
+
+/* Keep the native reasoning details and its buttons, with the MOI palette. */
+html.ah-layout #chat .mes_reasoning_header {
+    background: #efe8f3;
+    color: #5e486c;
+    border: 1px solid #dcd0e4;
+    border-radius: 8px;
+}
+html.ah-layout #chat .mes_reasoning_details[open] .mes_reasoning_header { background: #f3ecf5; }
+html.ah-layout #chat .mes_reasoning {
+    background: #faf7fb;
+    color: #60516a;
+    border-color: #d9cbe3;
+}
 html.ah-layout body #top-settings-holder #completion_prompt_manager_list,
 html.ah-layout body #top-settings-holder #completion_prompt_manager .completion_prompt_manager_list_head {
     background: #fffdf85c !important; color: #7c6b88 !important;

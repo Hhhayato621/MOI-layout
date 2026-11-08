@@ -9,9 +9,45 @@
 @import url('./photo-printer.css');
 @import url('./liquid-surface.css');
 @import url('./paper-note.css');
+
+/* Use the space between the open sidebars, independent of the host's chat-width setting. */
+html.ah-layout {
+    --moi-receipt-space: 0px;
+    --moi-dock-space: 0px;
+}
+@media (min-width: 760px) {
+    html.ah-layout:not(.ah-channels-collapsed) { --moi-receipt-space: var(--ah-left); }
+}
+@media (min-width: 1120px) {
+    html.ah-layout:not(.moi-right-collapsed) { --moi-dock-space: var(--ah-right); }
+}
+html.ah-layout body:not(.movingUI) #sheld#sheld {
+    --moi-content-start: calc(var(--tw-rail) + var(--moi-receipt-space));
+    box-sizing: border-box;
+    left: var(--moi-content-start) !important;
+    right: var(--moi-dock-space) !important;
+    width: calc(100% - var(--moi-content-start) - var(--moi-dock-space)) !important;
+    margin-inline: 0 !important;
+}
+html.ah-layout body:not(.movingUI) #sheld > #chat {
+    box-sizing: border-box;
+    align-self: stretch;
+    width: 100% !important;
+    max-width: none !important;
+    margin-inline: 0 !important;
+}
+
 .ah-folder-home { display: none; }
 .ah-layout.ah-folder-home-visible #chat > :not(.ah-folder-home) { display: none !important; }
-.ah-layout.ah-folder-home-visible .ah-folder-home { display: block; }
+.ah-layout.ah-folder-home-visible #chat > .ah-folder-home {
+    display: block;
+    box-sizing: border-box;
+    align-self: stretch;
+    flex-shrink: 0;
+    width: 100%;
+    min-width: 0;
+    margin-inline: auto;
+}
 .ah-folder-home {
     padding: 20px clamp(8px, 2vw, 24px) 50px;
     color: #494153;
@@ -112,7 +148,14 @@
     width: 30px; height: 30px; border: 1px solid #e3dbe9; border-radius: 50%;
     color: #796887; background: #fff; cursor: pointer; font-size: 21px;
 }
-.ah-archive-list { max-height: 310px; overflow: auto; scrollbar-width: thin; scrollbar-color: #c7b4d5 transparent; }
+.ah-archive-list {
+    max-height: min(310px, 36vh);
+    max-height: min(310px, 36dvh);
+    overflow: auto;
+    overscroll-behavior-y: contain;
+    scrollbar-width: thin;
+    scrollbar-color: #c7b4d5 transparent;
+}
 .ah-archive {
     display: flex; align-items: center; width: 100%; gap: 12px; text-align: left;
     color: #51435d; border: 0; border-top: 1px solid #eae4f0;
