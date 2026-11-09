@@ -128,3 +128,60 @@ html.ah-layout body #chat > .mes .mes_text :is(strong, b):not(:where(pre *, code
         font-size:12px!important; min-width:28px; min-height:30px; padding:6px;box-sizing:border-box;
     }
 }
+
+/* Full-width openings use the landscape pass above the message. */
+html.ah-layout body #chat > .moi-has-message-pass.moi-pass-banner .moi-message-identity {
+    float: none;
+    width: auto;
+    margin: 0 0 8px;
+}
+html.ah-layout body #chat > .moi-has-message-pass.moi-pass-banner .moi-message-pass {
+    width: min(100%, 420px);
+    aspect-ratio: 3 / 2;
+    margin: 0 auto;
+    background: url('./message-pass-horizontal.png') center / 100% 100% no-repeat;
+}
+html.ah-layout body #chat > .moi-pass-banner .moi-message-pass-frame { display: none; }
+html.ah-layout body #chat > .moi-pass-banner .moi-message-pass-photo {
+    top: 63%;
+    left: 13%;
+    width: 19%;
+    height: auto;
+    aspect-ratio: 3 / 4;
+    object-position: center 20%;
+    transform: translateY(-50%);
+    border: 2px solid #fffdf9;
+    border-radius: 2px;
+}
+html.ah-layout body #chat > .moi-pass-banner .moi-message-pass-name {
+    top: 47%;
+    left: 42%;
+    right: 11%;
+    width: auto;
+    height: auto;
+    font-size: 16px;
+}
+html.ah-layout body #chat > .moi-pass-banner .moi-message-pass-meta {
+    top: max(59%, calc(47% + 23px));
+    left: 42%;
+    right: 11%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1px 10px;
+    width: auto;
+    font-size: 11px;
+    line-height: 1.3;
+    overflow-wrap: anywhere;
+}
+/* Banner lines: date / tokens and time / floor. */
+html.ah-layout body #chat > .moi-pass-banner :is(.moi-message-pass-date, .moi-message-pass-floor) { flex-basis: 100%; }
+html.ah-layout body #chat > .moi-pass-banner .moi-message-pass-duration { display: contents; }
+html.ah-layout body #chat > .moi-pass-banner .moi-message-pass-separator { display: none; }
+html.ah-layout body #chat > .moi-has-message-pass.moi-pass-banner .moi-message-identity .ch_name {
+    justify-content: flex-end;
+    min-height: 0;
+    margin: 2px 0 0;
+}
+html.ah-layout body #chat > .moi-has-message-pass.moi-pass-banner > .mes_block > .mes_text {
+    padding-top: 0 !important;
+}

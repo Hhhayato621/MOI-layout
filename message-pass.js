@@ -1,7 +1,24 @@
 const asset = new URL('./message-pass.png', import.meta.url).href;
+const nonContent = 'style, script, link, template, br, hr, [hidden]';
+const fullWidthOpening = 'iframe, table, details, figure, img, picture, video, svg, canvas, object, embed, pre, header, section, article, aside, form, fieldset, div:is([class], [id], [style])';
 let queued = false;
 let reconcileAll = false;
 const dirtyMessages = new Set();
+
+// Return null for empty wrappers so the next visible part can decide the layout.
+function openingUsesBanner(container) {
+    for (const child of container.childNodes) {
+        if (child.nodeType === Node.TEXT_NODE) {
+            if (/[^\s\u200B]/u.test(child.textContent)) return false;
+        } else if (child.nodeType === Node.ELEMENT_NODE && !child.matches(nonContent)) {
+            if (child.matches(fullWidthOpening)) return true;
+            const nested = openingUsesBanner(child);
+            if (nested !== null) return nested;
+        }
+    }
+    return null;
+}
+
 function node(tag, cls, text) {
     const n = document.createElement(tag); n.className = cls;
     if (text) n.textContent = text;
@@ -16,6 +33,9 @@ function updatePasses() {
         const block = mes.querySelector('.mes_block');
         const avatar = mes.querySelector('.mesAvatarWrapper .avatar img');
         if (!block || !avatar) continue;
+        const content = block.querySelector(':scope > .mes_text');
+        const isCharacter = mes.getAttribute('is_user') !== 'true' && mes.getAttribute('is_system') !== 'true';
+        mes.classList.toggle('moi-pass-banner', isCharacter && Boolean(content && openingUsesBanner(content)));
         const name = mes.querySelector('.name_text')?.textContent || mes.getAttribute('ch_name') || '';
         const rawDate = mes.querySelector('.timestamp')?.textContent?.trim() || '';
         const date = rawDate.replace(/(\d{4})年(\d+)月(\d+)日\s*/, '$1/$2/$3  ');
@@ -42,7 +62,9 @@ function updatePasses() {
         const meta = node('div','moi-message-pass-meta');
         meta.append(node('time','moi-message-pass-date', date || '时间未记录'),
             node('div','moi-message-pass-tokens','Tokens  ' + tokens),
-            node('div','moi-message-pass-duration','Time  ' + timer + '  ·  #' + id));
+            node('div','moi-message-pass-duration','Time  ' + timer));
+        // The floor number joins the time line on the portrait pass and gets its own line on the banner.
+        meta.lastChild.append(node('span','moi-message-pass-separator','  ·  '), node('span','moi-message-pass-floor','#' + id));
         badge.replaceChildren(frame,title,portrait,meta);
         mes.classList.add('moi-has-message-pass');
     }
@@ -58,12 +80,14 @@ export function installMessagePasses() {
     new MutationObserver(records => {
         for(const record of records) {
             const target=record.target.nodeType===1?record.target:record.target.parentElement;
-            if(target?.closest('.moi-message-pass,.mes_text'))continue;
+            if(target?.closest('.moi-message-pass'))continue;
             if(target===chat) {
                 for(const added of record.addedNodes)if(added.nodeType===1&&added.matches('.mes'))schedule(added);
             } else {
                 const message=target?.closest('#chat > .mes');
-                if(message&&(target.closest('.mesAvatarWrapper,.ch_name')||record.type==='attributes'))schedule(message);
+                if (message && (target.matches('.mes_block')
+                    || target.closest('.mesAvatarWrapper,.ch_name,.mes_text')
+                    || record.type === 'attributes')) schedule(message);
             }
         }
     }).observe(chat,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['ch_name','timestamp','src','mesid']});
