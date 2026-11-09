@@ -7,6 +7,11 @@ html.ah-layout body #top-settings-holder .drawer-content.openDrawer {
     z-index: 3015 !important;
 }
 
+/* SillyTavern mounts its prompt editor outside the MOI navigation stack. */
+html.ah-layout body #completion_prompt_manager_popup {
+    z-index: 4010 !important;
+}
+
 html.ah-layout body #top-settings-holder .drawer-content,
 html.ah-layout body .popup {
     --SmartThemeBodyColor: #655d70;
