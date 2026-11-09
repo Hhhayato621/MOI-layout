@@ -185,3 +185,10 @@ html.ah-layout body #chat > .moi-has-message-pass.moi-pass-banner .moi-message-i
 html.ah-layout body #chat > .moi-has-message-pass.moi-pass-banner > .mes_block > .mes_text {
     padding-top: 0 !important;
 }
+
+/* Balance the prose margins: the host keeps a 30px right gutter for swipe arrows,
+   but MOI hides the avatar column, so only the last reply needs room, below the text. */
+html.ah-layout body #chat > .moi-has-message-pass { --mes-right-spacing: 10px; }
+html.ah-layout body #chat > .moi-has-message-pass.last_mes:not([is_user="true"]) > .mes_block {
+    padding-bottom: 34px;
+}
