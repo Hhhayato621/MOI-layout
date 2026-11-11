@@ -192,3 +192,11 @@ html.ah-layout body #chat > .moi-has-message-pass { --mes-right-spacing: 10px; }
 html.ah-layout body #chat > .moi-has-message-pass.last_mes:not([is_user="true"]) > .mes_block {
     padding-bottom: 34px;
 }
+
+/* Chinese lines stop up to one character short of the right edge, which reads as
+   the prose leaning left. Justify plain prose so both edges line up; leave HTML openings alone. */
+html.ah-layout body #chat > .mes .mes_text > :is(p, blockquote),
+html.ah-layout body #chat > .mes .mes_text > :is(ul, ol) > li {
+    text-align: justify;
+    text-justify: inter-character;
+}
